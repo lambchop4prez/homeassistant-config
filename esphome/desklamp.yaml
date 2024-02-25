@@ -1,0 +1,84 @@
+substitutions:
+  devicename: desklamp
+  friendly_name: "Desk Lamp"
+
+esphome:
+  name: ${devicename}
+  friendly_name: ${friendly_name}
+  comment: "Sonoff MiniR4 Extreme"
+
+esp32:
+  board: esp32dev
+  framework:
+    type: arduino
+
+<<: !include common.yaml
+
+api:
+  encryption:
+    key: !secret desklamp_encryption_key
+
+#######################################
+# Device specific Config Begins Below #
+#######################################
+
+status_led:
+  pin:
+    number: GPIO19
+    inverted: true
+
+output:
+  # Physical relay on GPIO
+  - platform: gpio
+    pin: GPIO26
+    id: relay_1
+
+light:
+  - platform: binary
+    id: light_1
+    name: ${friendly_name}
+    icon: mdi:desk-lamp
+    restore_mode: restore_default_off
+    output: relay_1
+
+binary_sensor:
+  - platform: gpio
+    pin: GPIO00
+    id: button
+    filters:
+      - invert:
+      - delayed_off: 50ms
+    on_press:
+      - light.toggle:
+          id: light_1
+
+  - platform: gpio
+    pin: GPIO27
+    id: None
+    filters:
+      - invert:
+      - delayed_off: 50ms
+    on_press:
+      then:
+        - light.turn_on:
+            id: light_1
+    on_release:
+      then:
+        - light.turn_off:
+            id: light_1
+
+time:
+  - platform: sntp
+    id: sntp_time
+    timezone: America/Detroit
+    on_time:
+      - seconds: 0
+        minutes: 30
+        hours: 7
+        then:
+          - light.turn_on: light_1
+      - seconds: 0
+        minutes: 00
+        hours: 00
+        then:
+          - light.turn_off: light_1
