@@ -3,7 +3,6 @@
 default_config:
 
 homeassistant:
-  legacy_templates: false
   name: Home
   latitude: !secret latitude
   longitude: !secret longitude
