@@ -1,0 +1,145 @@
+# 4 relay board
+---
+substitutions:
+  devicename: garden-control-1
+  friendly_name: "Garden Control"
+
+esphome:
+  name: ${devicename}
+
+esp8266:
+  board: esp12e
+  restore_from_flash: true
+
+globals:
+  - id: glob_light_mode
+    type: std::string
+    restore_value: false
+    initial_value: '"veg"'
+
+<<: !include common.yaml
+
+# i2c:
+#   - sda: 5
+#     scl: 4
+#     scan: true
+sensor:
+  - platform: uptime
+    name: $friendly_name Uptime
+    update_interval: 60s
+  - platform: wifi_signal
+    name: "$friendly_name WiFi Signal"
+    update_interval: 30s
+
+text_sensor:
+  - platform: version
+    name: $friendly_name Version
+  - id: light_mode
+    platform: template
+    name: Light Mode
+    lambda: |-
+      return id(glob_light_mode);
+    on_value:
+      then:
+        - globals.set:
+            id: glob_light_mode
+            value: !lambda |-
+              return x.c_str();
+
+time:
+  - platform: sntp
+    id: sntp_time
+    timezone: America/Detroit
+    on_time:
+      - seconds: 0
+        minutes: /10
+        then:
+          - fan.toggle: exhaust_fan_1
+      # Turn on light at 8 AM every day
+      - seconds: 0
+        minutes: 0
+        hours: 8
+        then:
+          - light.turn_on: grow_light_1
+      # Turn lights off at 8PM if in bloom
+      - seconds: 0
+        minutes: 0
+        hours: 20
+        then:
+          - if:
+              condition:
+                text_sensor.state:
+                  id: light_mode
+                  state: "bloom"
+              then:
+                - light.turn_off: grow_light_1
+      - seconds: 0
+        minutes: 0
+        hours: 2
+        then:
+          - if:
+              condition:
+                text_sensor.state:
+                  id: light_mode
+                  state: "veg"
+              then:
+                - light.turn_off: grow_light_1
+
+output:
+  - id: out_relay_1
+    platform: gpio
+    pin: GPIO16
+  - id: out_relay_2
+    platform: gpio
+    pin: GPIO14
+  - id: out_relay_3
+    platform: gpio
+    pin: GPIO12
+  - id: out_relay_4
+    platform: gpio
+    pin: GPIO13
+
+# Use the blue LED in the device as a status LED, which will blink if there are warnings (slow) or errors (fast)
+status_led:
+  pin:
+    number: GPIO5
+    inverted: True
+
+switch:
+  - id: relay_1
+    platform: output
+    name: "Relay 1"
+    output: out_relay_1
+  - id: relay_2
+    platform: output
+    name: "Relay 2"
+    output: out_relay_2
+  - id: relay_3
+    platform: output
+    name: "Relay 1"
+    output: out_relay_3
+  - id: relay_4
+    platform: output
+    name: "Relay 4 "
+    output: out_relay_4
+
+light:
+  - platform: binary
+    id: grow_light_1
+    name: "Grow Light 1"
+    output: out_relay_1
+    restore_mode: RESTORE_DEFAULT_ON
+
+fan:
+  - platform: binary
+    id: exhaust_fan_1
+    name: "Exhaust Fan"
+    output: out_relay_2
+    restore_mode: RESTORE_DEFAULT_OFF
+  - platform: binary
+    id: circulation_fan_1
+    name: "Circulation Fan"
+    output: out_relay_3
+    restore_mode: RESTORE_DEFAULT_ON
+
+

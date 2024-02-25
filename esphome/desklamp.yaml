@@ -16,7 +16,8 @@ esp32:
 
 api:
   encryption:
-    key: !secret desklamp_encryption_key
+    key: "luzv7EZMQs48Rd5NWi6IDe3wceYXn7IBi3OFUQUVyYE="
+
 
 #######################################
 # Device specific Config Begins Below #
