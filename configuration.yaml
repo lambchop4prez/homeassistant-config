@@ -2,6 +2,16 @@
 # Loads default set of integrations. Do not remove.
 default_config:
 
+homeassistant:
+  legacy_templates: false
+  name: Home
+  latitude: !secret latitude
+  longitude: !secret longitude
+  unit_system: us_customary
+  time_zone: America/Detroit
+  country: US
+  currency: USD
+
 # Load frontend themes from the themes folder
 frontend:
   themes: !include_dir_merge_named themes
