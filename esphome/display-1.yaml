@@ -1,0 +1,185 @@
+---
+substitutions:
+  devicename: display-1
+  friendly_name: ESP Display
+  fonts_dir: ./fonts
+
+esphome:
+  name: ${devicename}
+  friendly_name: ${friendly_name}
+  # platform: ESP32
+  # board: wemos_d1_mini32
+esp32:
+  board: esp32dev
+
+mqtt:
+  broker: homeassistant.lan
+  username: !secret mqtt_username
+  password: !secret mqtt_password
+  on_json_message:
+    topic: home/rf/915/OMG_lilygo_rtl_433_ESP/RTL_433toMQTT/Bresser-7in1/61912
+    then:
+      - sensor.template.publish:
+          id: outdoor_temperature
+          state: !lambda 'return x["temperature_C"];'
+      - sensor.template.publish:
+          id: outdoor_humidity
+          state: !lambda 'return x["humidity"];'
+
+<<: !include common.yaml
+api:
+  encryption:
+    key: !secret display_1_key
+sun:
+  longitude: !secret longitude
+  latitude: !secret latitude
+
+time:
+  - platform: sntp
+    id: ntp
+
+font:
+  - file: "${fonts_dir}/ModernDOS8x8.ttf"
+    id: text_font
+    size: 8
+
+  - file: '${fonts_dir}/materialdesignicons-webfont.ttf'
+    id: font_icons_small
+    size: 24
+    glyphs:
+      - "\U000F058E" # % drop (RH)
+      - "\U000F050F" # thermometer
+      - "\U000F059B" # Sun Set
+      - "\U000F059C" # Sun Rise
+
+  - file: '${fonts_dir}/materialdesignicons-webfont.ttf'
+    id: font_icons
+    size: 42
+    glyphs:
+      - "\U000F0594" # clear-night
+      - "\U000F0590" # cloudy
+      - "\U000F0595" # partlycloudy
+      - "\U000F0591" # fog
+      - "\U000F0592" # hail
+      - "\U000F0593" # lightning
+      - "\U000F067E" # lightning-rainy
+      - "\U000F0596" # pouring
+      - "\U000F0597" # rainy
+      - "\U000F0F36" # snowy
+      - "\U000F067F" # snowy-rainy
+      - "\U000F0599" # sunny
+      - "\U000F059D" # windy
+      - "\U000F059E" # windy-variant
+      - "\U000F0F38" # exceptional
+
+sensor:
+  - platform: template
+    name: "Outdoor Temperature"
+    id: outdoor_temperature
+
+  - platform: template
+    name: "Outdoor Humidity"
+    id: outdoor_humidity
+
+  - platform: sun
+    name: Sun Elevation
+    type: elevation
+    id: sun_elev
+
+text_sensor:
+  - platform: homeassistant
+    id: fc_home
+    name: "Weather Forecast From Home Assistant"
+    entity_id: weather.forecast_home
+
+  - platform: sun
+    name: Next Sunrise
+    type: sunrise
+    id: sunrise
+    format: "%H:%M"
+    internal: true
+
+  - platform: sun
+    name: Next Sunset
+    type: sunset
+    id: sunset
+    format: "%H:%M"
+    internal: true
+
+
+
+spi:
+  clk_pin: GPIO18
+  mosi_pin: GPIO23
+  interface: hardware
+display:
+  - platform: st7735
+    model: "INITR_18BLACKTAB"
+    reset_pin: GPIO26
+    cs_pin: GPIO5
+    dc_pin: GPIO25
+    rotation: 270
+    device_width: 128
+    device_height: 160
+    col_start: 0
+    row_start: 0
+    eight_bit_color: true
+    update_interval: 5s
+    lambda: |-
+      #include <math.h>
+      #include<string>
+      #include<map>
+      using namespace std;
+      #define xres 160
+      #define yres 128
+      #define xpad 3
+      #define ypad 3
+      #define r_col xres/2 + xpad
+      #define lineheight 24
+      int y = ypad + lineheight;
+      it.fill(COLOR_OFF);
+      it.strftime(xres/2, y, id(text_font), TextAlign::BOTTOM_CENTER, "%d/%b/%Y", id(ntp).now());
+
+      y += (ypad + lineheight);
+
+      static std::map<string, string> condition_icons = {
+            {"clear-night", "\U000F0594"},
+            {"cloudy", "\U000F0590"},
+            {"fog", "\U000F0591"},
+            {"hail", "\U000F0592"},
+            {"lightning", "\U000F0593"},
+            {"lightning-rainy", "\U000F067E"},
+            {"partlycloudy", "\U000F0595"},
+            {"pouring", "\U000F0596"},
+            {"rainy", "\U000F0597"},
+            {"snowy", "\U000F0F36"},
+            {"snowy-rainy", "\U000F067F"},
+            {"sunny", "\U000F0599"},
+            {"windy", "\U000F059D"},
+            {"windy-variant", "\U000F059E"},
+            {"exceptional", "\U000F0F38"}
+          };
+
+      it.print(r_col, y, id(font_icons), TextAlign::CENTER_LEFT, condition_icons[id(fc_home).state.c_str()].c_str());
+
+      it.print(xpad, y, id(font_icons_small), TextAlign::BOTTOM_LEFT, "\U000F050F");
+      if(!isnan(id(outdoor_temperature).state)) {
+        it.printf(xpad + 20, y, id(text_font), TextAlign::BOTTOM_LEFT, "%3.0f", (id(outdoor_temperature).state * 1.8) + 32);
+      }
+
+      y += (ypad + lineheight);
+
+      it.print(xpad, y, id(font_icons_small), TextAlign::BOTTOM_LEFT, "\U000F058E");
+      if(!isnan(id(outdoor_humidity).state)) {
+        it.printf(xpad + 20, y, id(text_font), TextAlign::BOTTOM_LEFT, "%3.0f", id(outdoor_humidity).state);
+      }
+
+      y += (ypad + lineheight);
+
+      if(id(sun_elev).state > 0) {
+        it.print(xpad, y, id(font_icons_small), TextAlign::BOTTOM_LEFT, "\U000F059B");
+        it.print(xpad + 30, y, id(text_font), TextAlign::BOTTOM_LEFT, id(sunset).state.c_str());
+      } else {
+        it.print(xpad, y, id(font_icons_small), TextAlign::BOTTOM_LEFT, "\U000F059C");
+        it.print(xpad + 30, y, id(text_font), TextAlign::BOTTOM_LEFT, id(sunrise).state.c_str());
+      }
