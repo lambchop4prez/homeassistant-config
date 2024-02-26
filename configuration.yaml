@@ -16,7 +16,7 @@ ecobee:
 
 solaredge:
   site_id: !secret solaredge_site
-  api_key: !secret solaredge key
+  api_key: !secret solaredge_key
 
 
 # Load frontend themes from the themes folder
