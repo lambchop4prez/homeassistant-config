@@ -1,0 +1,42 @@
+substitutions:
+  devicename: desk-clock
+  friendly_name: ESP Marquee Clock
+  fonts_dir: ./fonts
+
+esphome:
+  name: ${devicename}
+  friendly_name: ${friendly_name}
+
+esp8266:
+  board: esp01_1m
+
+<<: !include common.yaml
+
+
+# Enable Home Assistant API
+api:
+  encryption:
+    key: !secret desk_clock_encryption_key
+
+font:
+  - file: "${fonts_dir}/Early GameBoy.ttf"
+    id: digit_font
+    size: 8
+
+spi:
+  clk_pin: GPIO14
+  mosi_pin: GPIO13
+
+time:
+  - platform: sntp
+    id: sntp_time
+
+display:
+  - platform: max7219digit
+    cs_pin: GPIO15
+    num_chips: 4
+    intensity: 5
+    lambda: |-
+      it.strftime(0, -1, id(digit_font), "%H", id(sntp_time).now());
+      it.print(14, -1, id(digit_font), ":");
+      it.strftime(18, -1, id(digit_font), "%M", id(sntp_time).now());
