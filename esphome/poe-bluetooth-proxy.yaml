@@ -1,0 +1,40 @@
+esphome:
+  name: poe-bluetooth-proxy
+  friendly_name: Bluetooth Proxy
+
+esp32:
+  board: esp32dev
+  framework:
+    type: esp-idf
+
+# See: https://esphome.io/components/ethernet.html#configuration-for-lilygo-ttgo-t-internet-poe-esp32-wroom-lan8270a-chip
+ethernet:
+  type: LAN8720
+  mdc_pin: GPIO23
+  mdio_pin: GPIO18
+  clk_mode: GPIO17_OUT
+  phy_addr: 0
+
+<<: !include common-no-wifi.yaml
+
+# Enable Home Assistant API
+api:
+  encryption:
+    key: !secret poe_bluetooth_proxy_encryption_key
+
+ota:
+  password: !secret poe_bluetooth_proxy_ota_password
+
+esp32_ble_tracker:
+  scan_parameters:
+    interval: 1100ms
+    window: 1100ms
+    active: true
+
+bluetooth_proxy:
+  active: true
+
+button:
+  - platform: safe_mode
+    name: Safe Mode Boot
+    entity_category: diagnostic

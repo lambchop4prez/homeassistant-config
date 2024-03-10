@@ -6,4 +6,20 @@ wifi:
   ap:
     ssid: "${devicename}"
     password: "NoVNR2vHou"
+
 captive_portal:
+
+sensor:
+  - platform: wifi_signal
+    name: ${friendly_name} Wifi Signal Strength
+    update_interval: 90s
+    entity_category: "diagnostic"
+
+text_sensor:
+  - platform: wifi_info
+    ssid:
+      name: ${friendly_name} Connected SSID
+    ip_address:
+      name: ${friendly_name} IP Address
+    dns_address:
+      name: ${friendly_name} DNS Address

@@ -263,7 +263,6 @@ binary_sensor:
     name: "${friendly_name} Button 3"
     on_press:
       then:
-         - display.page.show_previous: t5_display
          - component.update: t5_display
 
 text_sensor:
@@ -280,9 +279,9 @@ text_sensor:
     entity_id: weather.forecast_home
     id: fc_weather
     internal: true
-    on_value: # Actions to perform once data for the last sensor has been received
-      then:
-        - script.execute: all_data_received
+    # on_value: # Actions to perform once data for the last sensor has been received
+    #   then:
+    #     - script.execute: all_data_received
 
   - platform: sun
     name: Next Sunrise
@@ -299,47 +298,48 @@ text_sensor:
     internal: true
 
 
-script:
-  - id: all_data_received
-    then:
-      # - component.update: batt_volt
-      - component.update: batt
-      - component.update: sunrise
-      - component.update: sunset
-      #- component.update: air_quality
-      # - display.page.show: weather
-      - component.update: t5_display
-      #- script.execute: enter_sleep
+# script:
+#   - id: all_data_received
+#     then:
+#       # - component.update: batt_volt
+#       - component.update: batt
+#       - component.update: sunrise
+#       - component.update: sunset
+#       #- component.update: air_quality
+#       # - display.page.show: weather
+#       - component.update: t5_display
+#       #- script.execute: enter_sleep
 
-  - id: enter_sleep
-    then:
-      - if:
-          condition:
-            lambda: |-
-              auto time = id(ntp).now();
-              if (!time.is_valid()) {
-                return false;
-              }
-              return (time.hour < 6);
-          then:
-            - logger.log: "It's nighttime, entering long sleep for ${night_sleep_time}"
-            - deep_sleep.enter:
-                id: deep_sleep_1
-                sleep_duration: ${night_sleep_time}
-          else:
-            - logger.log: "It's daytime, entering short sleep for ${sleep_time}"
-            - deep_sleep.enter:
-                id: deep_sleep_1
-                sleep_duration: ${sleep_time}
+#   - id: enter_sleep
+#     then:
+#       - if:
+#           condition:
+#             lambda: |-
+#               auto time = id(ntp).now();
+#               if (!time.is_valid()) {
+#                 return false;
+#               }
+#               return (time.hour < 6);
+#           then:
+#             - logger.log: "It's nighttime, entering long sleep for ${night_sleep_time}"
+#             - deep_sleep.enter:
+#                 id: deep_sleep_1
+#                 sleep_duration: ${night_sleep_time}
+#           else:
+#             - logger.log: "It's daytime, entering short sleep for ${sleep_time}"
+#             - deep_sleep.enter:
+#                 id: deep_sleep_1
+#                 sleep_duration: ${sleep_time}
 
 display:
   - platform: t547
     id: t5_display
     rotation: 0
-    update_interval: 60s
+    update_interval: 30s
     lambda: |-
-      it.strftime(15, 310, id(pixel_font), TextAlign::BASELINE_LEFT, "%H:%M", id(ntp).now());
-      it.strftime(50, 500, id(vga_font), TextAlign::BASELINE_LEFT, "%Y-%m-%d %a", id(ntp).now());
+      it.rectangle(10, 10, 20, 20);
+      //it.strftime(15, 310, id(pixel_font), TextAlign::BASELINE_LEFT, "%H:%M", id(ntp).now());
+      //it.strftime(50, 500, id(vga_font), TextAlign::BASELINE_LEFT, "%Y-%m-%d %a", id(ntp).now());
     # pages:
     #   - id: loading
     #     lambda: |-
@@ -423,12 +423,10 @@ display:
     #         {"exceptional", "\U000F0F38"}
     #       };
 
-
     #       // Outside Temp
     #       #define temp_x x_pad + (xres/4)
     #       if(id(internal_temp).state) {
     #         it.printf(temp_x, y + y_pad, id(pixel_font), TextAlign::TOP_LEFT, "%3.0f °F", (id(internal_temp).state * 1.8) + 32);
     #       }
-
     #       y+=135+y_pad;
 
