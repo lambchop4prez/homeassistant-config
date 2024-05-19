@@ -15,7 +15,7 @@ globals:
   - id: glob_light_mode
     type: std::string
     restore_value: false
-    initial_value: '"veg"'
+    initial_value: '"bloom"'
 
 <<: !include common.yaml
 
