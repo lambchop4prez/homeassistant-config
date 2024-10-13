@@ -1,0 +1,7 @@
+---
+packages:
+  ota: !include ota.yaml
+  api: !include api.yaml
+  logging: !include logging.yaml
+  sensors: !include sensors.yaml
+  webserver: !include webserver.yaml
