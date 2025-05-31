@@ -1,10 +1,13 @@
 ---
 substitutions:
-  devicename: garden-control-1
+  name: garden-control-1
   friendly_name: "Garden Control"
+  api_encryoption_key: !secret garden_control_encryption_key
+  ota_password: !secret garden_control_ota_password
+
 
 esphome:
-  name: ${devicename}
+  name: ${name}
   comment: "4 relay board"
 
 esp8266:
@@ -17,23 +20,14 @@ globals:
     restore_value: false
     initial_value: '"bloom"'
 
-<<: !include common.yaml
+<<: !include common/base.yaml
 
 # i2c:
 #   - sda: 5
 #     scl: 4
 #     scan: true
-sensor:
-  - platform: uptime
-    name: $friendly_name Uptime
-    update_interval: 60s
-  - platform: wifi_signal
-    name: "$friendly_name WiFi Signal"
-    update_interval: 30s
 
 text_sensor:
-  - platform: version
-    name: $friendly_name Version
   - id: light_mode
     platform: template
     name: Light Mode

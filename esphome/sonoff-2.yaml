@@ -9,7 +9,7 @@ esphome:
   board: esp01_1m
   comment: "Sonoff 1"
 
-<<: !include common.yaml
+<<: !include common/base.yaml
 
 output:
   - id: out_relay

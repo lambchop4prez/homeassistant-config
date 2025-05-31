@@ -1,9 +1,11 @@
 substitutions:
-  devicename: desklamp
+  name: desklamp
   friendly_name: "Desk Lamp"
+  api_encryoption_key: !secret desk_lamp_encryption_key
+  ota_password: !secret desk_lamp_ota_password
 
 esphome:
-  name: ${devicename}
+  name: ${name}
   friendly_name: ${friendly_name}
   comment: "Sonoff MiniR4 Extreme"
 
@@ -12,12 +14,7 @@ esp32:
   framework:
     type: arduino
 
-<<: !include common.yaml
-
-api:
-  encryption:
-    key: "luzv7EZMQs48Rd5NWi6IDe3wceYXn7IBi3OFUQUVyYE="
-
+<<: !include common/base.yaml
 
 #######################################
 # Device specific Config Begins Below #
@@ -75,11 +72,11 @@ time:
     on_time:
       - seconds: 0
         minutes: 30
-        hours: 7
+        hours: 8
         then:
           - light.turn_on: light_1
       - seconds: 0
         minutes: 00
-        hours: 00
+        hours: 21
         then:
           - light.turn_off: light_1
