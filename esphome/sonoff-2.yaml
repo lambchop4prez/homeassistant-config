@@ -7,9 +7,11 @@ substitutions:
 
 esphome:
   name: $devicename
-  platform: ESP8266
-  board: esp01_1m
+  friendly_name: $friendly_name
   comment: "Sonoff 1"
+
+esp8266:
+  board: esp01_1m
 
 <<: !include common/base.yaml
 
