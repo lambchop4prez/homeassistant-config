@@ -10,11 +10,15 @@ substitutions:
 
 esphome:
   name: ${devicename}
-  platform: ESP32
-  board: esp32dev
+  friendly_name: ${friendly_name}
   comment: "LilyGo T-Display 4.7"
+  
 
-<<: !include common.yaml
+esp32:
+  board: esp32dev
+  
+
+<<: !include common/base.yaml
 
 api:
   encryption:
@@ -138,9 +142,13 @@ font:
   #   resize: 300x300
   #   type: BINARY
   #   dither: FLOYDSTEINBERG
+# external_components:
+#   - source: github://tiaanv/esphome-components
+#     components: ["t547"]
 external_components:
-  - source: github://tiaanv/esphome-components
-    components: ["t547"]
+  - source: github://ashald/esphome@lilygo-t5-47
+    components:
+    - lilygo_t5_47
 # external_components:
 #   - source:
 #       type: git
@@ -228,7 +236,7 @@ sensor:
       id: internal_humidity
     update_interval: 60s
 
-  - platform: bmp280
+  - platform: bmp280_i2c
     temperature:
       name: "${friendly_name} Temperature"
       oversampling: 16x
@@ -332,7 +340,7 @@ text_sensor:
 #                 sleep_duration: ${sleep_time}
 
 display:
-  - platform: t547
+  - platform: lilygo_t5_47
     id: t5_display
     rotation: 0
     update_interval: 30s
