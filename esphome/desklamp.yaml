@@ -1,7 +1,7 @@
 substitutions:
   name: desklamp
   friendly_name: "Desk Lamp"
-  api_encryoption_key: !secret desk_lamp_encryption_key
+  api_encryption_key: !secret desk_lamp_encryption_key
   ota_password: !secret desk_lamp_ota_password
 
 esphome:
