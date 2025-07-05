@@ -11,9 +11,6 @@ homeassistant:
   country: US
   currency: USD
 
-ecobee:
-  api_key: !secret ecobee_key
-
 automation: !include automations.yaml
 script: !include scripts.yaml
 scene: !include scenes.yaml
