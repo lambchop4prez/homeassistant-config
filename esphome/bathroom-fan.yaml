@@ -1,0 +1,116 @@
+---
+substitutions:
+  name: bathroom-fan
+  friendly_name: "Bathroom Fan"
+  api_encryption_key: !secret bathroom_fan_encryption_key
+  ota_password: !secret bathroom_fan_ota_password
+  on_humidity_threshold: "85"
+
+esphome:
+  name: ${name}
+  friendly_name: ${friendly_name}
+  comment: "Martin Jerry SS02"
+
+esp8266:
+  board: esp8285
+
+<<: !include common/base.yaml
+
+i2c:
+  sda: GPIO13
+  scl: GPIO04
+
+sensor:
+  - platform: aht10
+    id: aht10_sensor
+    update_interval: 30s
+    humidity:
+      name: "${friendly_name} Humidity"
+      on_value:
+        then:
+          - lambda: |-
+              if (x >= id(on_humidity_threshold_ui).state) {
+                id(fan_timer).execute();
+              } 
+
+number:
+  - platform: template
+    name: "${friendly_name} On Humidity Threshold"
+    id: on_humidity_threshold_ui
+    unit_of_measurement: "%"
+    min_value: 0
+    max_value: 100
+    step: 5
+    mode: box
+    update_interval: never
+    optimistic: true
+    restore_value: true
+    initial_value: ${on_humidity_threshold}
+    icon: "mdi:water-percent"
+    entity_category: config
+    on_value:
+      - lambda: 'id(aht10_sensor).update();'
+
+output:
+  - id: relay
+    platform: gpio
+    pin: GPIO05
+
+script:
+  - id: fan_timer
+    mode: restart
+    then:
+      - fan.turn_on: exhaust_fan
+      - delay: 30min
+      - fan.turn_off: exhaust_fan
+
+fan:
+  id: exhaust_fan
+  platform: binary
+  output: relay
+  name: "${friendly_name} Fan"
+  icon: mdi:fan
+  on_turn_on:
+    - switch.turn_on: blue_led
+    - switch.turn_off: red_led
+  on_turn_off:
+    - switch.turn_off: blue_led
+    - switch.turn_on: red_led
+    - delay: 5sec
+    - switch.turn_off: red_led
+
+switch:
+  - platform: gpio
+    pin: GPIO12
+    id: red_led
+    internal: true
+    inverted: true
+  - platform: gpio
+    pin: GPIO14
+    id: blue_led
+    internal: true
+    inverted: true
+
+binary_sensor:
+  - platform: gpio
+    pin:
+      number: GPIO03
+      mode: INPUT_PULLUP
+      inverted: true
+    id: main_button
+    internal: true
+    on_press:
+      - script.execute: fan_timer
+    on_double_click:
+      - if:
+          condition:
+            - script.is_running: fan_timer
+          then:
+            - script.stop: fan_timer
+            - fan.turn_off: exhaust_fan
+
+button:
+  - platform: restart
+    id: restart_button
+    name: "${friendly_name} Restart"
+    entity_category: diagnostic
