@@ -6,3 +6,5 @@
 *.log
 *.log.*
 fonts
+.venv
+.direnv
