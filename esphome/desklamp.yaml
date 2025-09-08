@@ -14,7 +14,7 @@ esp32:
   framework:
     type: arduino
 
-<<: !include common/base.yaml
+<<: !include ./common/base.yaml
 
 #######################################
 # Device specific Config Begins Below #

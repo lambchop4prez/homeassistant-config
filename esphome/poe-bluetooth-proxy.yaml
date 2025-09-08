@@ -23,7 +23,7 @@ ethernet:
   interrupt_pin: GPIO13
   reset_pin: GPIO14
 
-<<: !include common/no-wifi.yaml
+<<: !include ./common/no-wifi.yaml
 
 esp32_ble_tracker:
   scan_parameters:
