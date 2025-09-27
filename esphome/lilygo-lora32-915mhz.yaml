@@ -1,0 +1,101 @@
+---
+substitutions:
+  name: lilygo-lora32-915mhz
+  friendly_name: "Lora32 915mhz"
+  api_encryption_key: !secret lilygo_lora32_915mhz_encryption_key
+  ota_password: !secret lilygo_lora32_915mhz_ota_password
+
+esphome:
+  name: $name
+  friendly_name: ${friendly_name}
+  comment: "LILYGO LoRa32 915Mhz"
+  # libraries:
+  #   - RadioLib@6.2.0
+  # platformio_options:
+  #   lib_ldf_mode: "chain+"
+  #   build_flags:
+  #     - '-DONBOARD_LED=25'
+  #     - '-DMY_DEVICES'
+  #     - '-DRF_MODULE_CS=18'
+  #     - '-DRF_MODULE_SCK=5'
+  #     - '-DRF_MODULE_RST=23'
+  #     - '-DRF_MODULE_DIO0=26'
+  #     - '-DRF_MODULE_DIO1=33'
+  #     - '-DRF_MODULE_DIO2=32'
+  #     - '-DRF_SX1276'
+  #     - '-DRF_MODULE_FREQUENCY=915.00'
+
+esp32:
+  board: ttgo-lora32-v1
+  framework:
+    type: esp-idf
+
+<<: !include common/wifi.yaml
+<<: !include common/ota.yaml
+<<: !include common/api.yaml
+<<: !include common/logging.yaml
+<<: !include common/sensors.yaml
+<<: !include common/webserver.yaml
+
+packages: 
+  # this generally should be all what you need to add this rtl_433 component to esphome:
+  rtl_433: github://juanboro/esphome-rtl_433-decoder/rtl_433.yaml
+
+spi:
+  clk_pin: GPIO5
+  mosi_pin: GPIO27
+  miso_pin: GPIO19
+
+sx127x:
+  # pa_pin: BOOST
+  # pa_power: 17
+  # bitrate: 250000
+  payload_length: 10
+  # sync_value: [0xAA, 0xAA]
+  # preamble_size: 4
+  # preamble_detect: 2
+  # preamble_errors: 8
+  # preamble_polarity: 0x55
+  cs_pin: GPIO18
+  rst_pin: GPIO23
+  # bandwidth: 100_0kHz
+  frequency: 915000000
+  modulation: FSK
+  packet_mode: true
+  dio0_pin: 
+    number: GPIO26
+    mode:
+      input: true
+      output: true
+      pullup: true
+      open_drain: true
+    allow_other_uses: true
+  rx_start: true
+  bitsync: true
+  crc_enable: true
+
+remote_receiver:
+  id: rf_receiver
+  idle: 10ms
+  filter: 20us
+  buffer_size: 2048
+  pin: 
+    number: GPIO26
+    mode:
+      input: true
+      output: true
+      pullup: true
+      open_drain: true
+    allow_other_uses: true 
+  dump:
+    - raw
+
+rtl_433:
+  id: my_rtl433_id
+  receiver_id: rf_receiver
+  on_json_message:
+    then:
+     - lambda: |-
+        String v;
+        serializeJson(x, v);
+        ESP_LOGD("lambda", v.c_str());

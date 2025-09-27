@@ -1,0 +1,33 @@
+---
+substitutions:
+  name: kitchen-sink-light-switch
+  friendly_name: "Kitchen Sink Light"
+  api_encryption_key: !secret kitchen_sink_light_switch_encryption_key
+  ota_password: !secret kitchen_sink_light_switch_ota_password
+
+packages:
+  device_base: !include ./devices/sonoff-minir4-extreme.yaml
+  config_base: !include ./common/base.yaml
+
+light:
+  - platform: binary
+    id: light_1
+    name: ${friendly_name}
+    icon: mdi:desk-lamp
+    restore_mode: restore_default_off
+    output: relay
+
+binary_sensor:
+  - id: !extend button
+    on_press:
+      - light.toggle:
+          id: light_1
+  - id: !extend input
+    on_press:
+      then:
+        - light.turn_on:
+            id: light_1
+    on_release:
+      then:
+        - light.turn_off:
+            id: light_1
