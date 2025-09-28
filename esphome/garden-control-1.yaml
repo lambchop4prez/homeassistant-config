@@ -2,9 +2,8 @@
 substitutions:
   name: garden-control-1
   friendly_name: "Garden Control"
-  api_encryoption_key: !secret garden_control_encryption_key
+  api_encryption_key: !secret garden_control_encryption_key
   ota_password: !secret garden_control_ota_password
-
 
 esphome:
   name: ${name}
@@ -20,7 +19,8 @@ globals:
     restore_value: false
     initial_value: '"bloom"'
 
-<<: !include common/base.yaml
+packages:
+  common: !include common/base.yaml
 
 # i2c:
 #   - sda: 5

@@ -13,7 +13,7 @@ light:
   - platform: binary
     id: light_1
     name: ${friendly_name}
-    icon: mdi:desk-lamp
+    icon: mdi:ceiling-light
     restore_mode: restore_default_off
     output: relay
 
