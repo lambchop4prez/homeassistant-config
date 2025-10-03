@@ -1,0 +1,111 @@
+substitutions:
+  device_comment: "Elegrp RRR00 Smart In-Wall Outlet with Energy Monitoring"
+
+bk72xx:
+  board: cbu
+
+# Enable logging
+logger:
+  # Set baud to 0 to disable UART logging https://esphome.io/components/logger
+  baud_rate: 0  # (UART logging may interfere with BL0942)
+
+status_led:
+  pin:
+    number: P20 # Red LED Incorrectly labeled CEN on PCB
+    inverted: no # no invert to be normally off, only on when blinking
+
+# Belling BL0942 on RX1 and TX1 https://esphome.io/components/sensor/bl0942.html
+uart:
+  rx_pin: RX1
+  tx_pin: TX1
+  baud_rate: 4800
+  stop_bits: 1
+
+sensor:
+  - platform: bl0942
+    voltage:
+      name: '${device_name} Outlet Voltage'
+      accuracy_decimals: 3
+      filters:
+      - sliding_window_moving_average:
+          window_size: 64
+          send_every: 64
+          send_first_at: 64
+    frequency:
+      name: "${device_name} Outlet Frequency"
+      accuracy_decimals: 3
+      filters:
+      - sliding_window_moving_average:
+          window_size: 64
+          send_every: 64
+          send_first_at: 64
+    current:
+      name: '${device_name} Outlet Total Current'
+      accuracy_decimals: 3
+      filters:
+      - sliding_window_moving_average:
+          window_size: 64
+          send_every: 64
+          send_first_at: 64
+    power:
+      name: '${device_name} Outlet Total Power'
+      accuracy_decimals: 3
+    energy:
+      name: '${device_name} Outlet Total Energy'
+      accuracy_decimals: 3
+
+binary_sensor:
+  - platform: gpio
+    name: "Upper Outlet button"
+    # Upper switch button SW1 shorts P6 low when pressed.
+    pin:
+      number: P6 # Incorrectly labeled P8 on PCB
+      mode: INPUT_PULLUP
+      inverted: True
+    on_press:
+      - switch.toggle: upperRelay
+
+  - platform: gpio
+    name: "Lower Outlet button"
+    # Lower switch button SW2 shorts P8 low when pressed.
+    pin:
+      number:  P8 # Incorrectly labeled ADC on PCB
+      mode: INPUT_PULLUP
+      inverted: True
+    on_press:
+      - switch.toggle: lowerRelay
+
+switch:
+  - platform: gpio
+    # Upper outlet active-high to energize on P9
+    name: "Upper Outlet"
+    pin: P9 # Incorrectly labeled P6 on PCB
+    id: upperRelay
+    # restore_mode: ALWAYS_ON
+    on_turn_on:
+      - switch.turn_on: upperLED
+    on_turn_off:
+      - switch.turn_off: upperLED
+
+  - platform: gpio
+    # Lower outlet active-high to energize on P7
+    name: "Lower Outlet"
+    pin: P7 # Incorrectly labeled P24 on PCB
+    id: lowerRelay
+    # restore_mode: ALWAYS_ON
+    on_turn_on:
+      - switch.turn_on: lowerLED
+    on_turn_off:
+      - switch.turn_off: lowerLED
+
+  - platform: gpio
+    # Upper LED active-high on P14
+    name: "Upper LED"
+    pin: P14 # Incorrectly labeled P7 on PCB
+    id: upperLED
+  
+  - platform: gpio
+    # Lower LED active-high on P28
+    name: "Lower LED"
+    pin: P28 # Incorrectly labeled P26 on PCB
+    id: lowerLED

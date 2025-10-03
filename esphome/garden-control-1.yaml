@@ -99,7 +99,7 @@ status_led:
     number: GPIO5
     inverted: True
 
-# switch:
+switch:
 #   - id: relay_1
 #     platform: output
 #     name: "Relay 1"
@@ -112,10 +112,10 @@ status_led:
 #     platform: output
 #     name: "Relay 1"
 #     output: out_relay_3
-#   - id: relay_4
-#     platform: output
-#     name: "Relay 4 "
-#     output: out_relay_4
+  - id: relay_4
+    platform: output
+    name: "Auxiliary outlet"
+    output: out_relay_4
 
 light:
   - platform: binary
