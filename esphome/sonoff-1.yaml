@@ -1,9 +1,9 @@
 ---
 substitutions:
-  device_name: sonoff-2
-  friendly_name: Desk Lamp 2
-  api_encryption_key: !secret sonoff_2_encryption_key
-  ota_password: !secret sonoff_2_ota_password
+  device_name: sonoff-1
+  friendly_name: Desk Lamp 1
+  api_encryption_key: !secret sonoff_1_encryption_key
+  ota_password: !secret sonoff_1_ota_password
 
 packages:
   base: !include common/base.yaml
