@@ -1,13 +1,13 @@
 ---
 substitutions:
-  name: bathroom-fan
+  device_name: bathroom-fan
   friendly_name: "Bathroom Fan"
   api_encryption_key: !secret bathroom_fan_encryption_key
   ota_password: !secret bathroom_fan_ota_password
   on_humidity_threshold: "85"
 
 esphome:
-  name: ${name}
+  name: ${device_name}
   friendly_name: ${friendly_name}
   comment: "Martin Jerry SS02"
 
