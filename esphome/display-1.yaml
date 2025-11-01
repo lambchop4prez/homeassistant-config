@@ -1,11 +1,11 @@
 ---
 substitutions:
-  devicename: display-1
+  device_name: display-1
   friendly_name: ESP Display
   fonts_dir: ./fonts
 
 esphome:
-  name: ${devicename}
+  name: ${device_name}
   friendly_name: ${friendly_name}
   # platform: ESP32
   # board: wemos_d1_mini32

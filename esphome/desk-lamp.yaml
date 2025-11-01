@@ -1,5 +1,5 @@
 substitutions:
-  name: desklamp
+  device_name: desklamp
   friendly_name: "Desk Lamp"
   
 packages:

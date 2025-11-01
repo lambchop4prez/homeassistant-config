@@ -1,6 +1,6 @@
 ---
 substitutions:
-  devicename: epaper1
+  device_name: epaper1
   friendly_name: EPaper Display #Device Name
   run_time: 5min #can be as long as needed to get data
   sleep_time: 25min # normal sleep time
@@ -9,7 +9,7 @@ substitutions:
   images_dir: ./images
 
 esphome:
-  name: ${devicename}
+  name: ${device_name}
   friendly_name: ${friendly_name}
   comment: "LilyGo T-Display 4.7"
   

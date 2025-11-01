@@ -1,12 +1,12 @@
 ---
 substitutions:
-  name: lilygo-lora32-915mhz
+  device_name: lilygo-lora32-915mhz
   friendly_name: "Lora32 915mhz"
   api_encryption_key: !secret lilygo_lora32_915mhz_encryption_key
   ota_password: !secret lilygo_lora32_915mhz_ota_password
 
 esphome:
-  name: $name
+  name: $device_name
   friendly_name: ${friendly_name}
   comment: "LILYGO LoRa32 915Mhz"
   # libraries:

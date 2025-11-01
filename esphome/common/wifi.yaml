@@ -4,7 +4,7 @@ wifi:
   password: !secret wifi_password
   domain: ".lan"
   ap:
-    ssid: "${name}"
+    ssid: "${device_name}"
     password: "NoVNR2vHou"
 
 captive_portal:

@@ -1,14 +1,14 @@
 substitutions:
-  name: desk-clock
+  device_name: desk-clock
   friendly_name: ESP Marquee Clock
   fonts_dir: ./fonts
   api_encryption_key: !secret desk_clock_encryption_key
   ota_password: !secret desk_clock_ota_password
 
 esphome:
-  name: $name
+  name: $device_name
   friendly_name: $friendly_name
-  comment: "ESP32 Desk Clock"
+  comment: "ESP Desk Clock"
 
 esp8266:
   board: esp01_1m
