@@ -100,14 +100,14 @@ binary_sensor:
     id: main_button
     internal: true
     on_press:
-      - script.execute: fan_timer
-    on_double_click:
       - if:
           condition:
             - script.is_running: fan_timer
           then:
             - script.stop: fan_timer
             - fan.turn_off: exhaust_fan
+          else:
+            - script.execute: fan_timer
 
 button:
   - platform: restart
