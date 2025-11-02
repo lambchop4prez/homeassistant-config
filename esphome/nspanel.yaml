@@ -17,12 +17,6 @@ packages:
     refresh: 300s
     files:
       - nspanel_esphome.yaml # Basic package
-      # Optional advanced and add-on configurations
-      # - esphome/nspanel_esphome_addon_climate_cool.yaml
-      - esphome/nspanel_esphome_addon_climate_heat.yaml
-      # - esphome/nspanel_esphome_addon_climate_dual.yaml
-      # - esphome/nspanel_esphome_addon_cover.yaml
-      #
 esp32:
   framework:
     type: esp-idf
