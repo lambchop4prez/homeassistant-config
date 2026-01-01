@@ -1,5 +1,5 @@
 substitutions:
-  device_name: poe-bluetooth-proxy
+  name: poe-bluetooth-proxy
   friendly_name: Bluetooth Proxy
   api_encryption_key: !secret poe_bluetooth_proxy_encryption_key
   ota_password: !secret poe_bluetooth_proxy_ota_password

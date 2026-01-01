@@ -1,6 +1,6 @@
 ---
 substitutions:
-  device_name: bathroom-fan
+  name: bathroom-fan
   friendly_name: "Bathroom Fan"
   api_encryption_key: !secret bathroom_fan_encryption_key
   ota_password: !secret bathroom_fan_ota_password
@@ -31,7 +31,7 @@ sensor:
           - lambda: |-
               if (x >= id(on_humidity_threshold_ui).state) {
                 id(fan_timer).execute();
-              } 
+              }
 
 number:
   - platform: template

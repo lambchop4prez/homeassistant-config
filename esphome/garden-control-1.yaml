@@ -1,12 +1,11 @@
 ---
 substitutions:
-  device_name: garden-control-1
+  name: garden-control-1
   friendly_name: "Garden Control"
   api_encryption_key: !secret garden_control_encryption_key
-  ota_password: !secret garden_control_ota_password
 
 esphome:
-  name: ${device_name}
+  name: ${name}
   comment: "4 relay board"
 
 esp8266:

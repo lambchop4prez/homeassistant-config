@@ -1,0 +1,4 @@
+---
+spi:
+  clk_pin: $spi_clk
+  mosi_pin: $spi_mosi

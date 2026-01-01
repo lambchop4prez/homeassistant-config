@@ -1,8 +1,8 @@
 ---
 esphome:
-  name: $device_name
-  friendly_name: $friendly_name
-  comment: $device_comment
+  name: ${name}
+  friendly_name: ${friendly_name}
+  comment: ${device_comment}
 
 packages:
   wifi: !include wifi.yaml

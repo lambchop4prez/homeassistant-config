@@ -1,6 +1,6 @@
 ---
 substitutions:
-  device_name: display-1
+  name: display-1
   friendly_name: ESP Display
   fonts_dir: ./fonts
 

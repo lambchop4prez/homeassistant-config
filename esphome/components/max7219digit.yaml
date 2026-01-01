@@ -1,0 +1,8 @@
+---
+packages:
+  spi: ./spi.yaml
+
+display:
+  - id: max7219digit_display
+    platform: max7219digit
+    cs_pin: $display_cs
