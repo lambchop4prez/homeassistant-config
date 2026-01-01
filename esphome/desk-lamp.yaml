@@ -1,5 +1,6 @@
 substitutions:
   device_name: desklamp
+  name: ${device_name}
   friendly_name: "Desk Lamp"
   api_encryption_key: !secret desk_lamp_encryption_key
   ota_password: !secret desk_lamp_ota_password
