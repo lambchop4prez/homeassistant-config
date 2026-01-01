@@ -8,7 +8,7 @@ packages:
   device_base: !include ./devices/sonoff-minir4-extreme.yaml
   config_base: !include ./common/base.yaml
   bluetooth_proxy: !include ./components/bluetooth-proxy.yaml
-  ble_tracker: !include ./components/ble-tracker.yaml
+  # ble_tracker: !include ./components/ble-tracker.yaml
 
 light:
   - platform: binary
