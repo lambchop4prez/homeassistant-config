@@ -1,0 +1,6 @@
+[tools]
+"python" = "3.13.2"
+"aqua:casey/just" = "1.45.0"
+"pipx:esphome/esphome" = "2025.12.3"
+"github:bitwarden/sdk" = "bws-v1.0.0"
+"github:mitsuhiko/minijinja" = "2.13.0"
