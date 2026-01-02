@@ -1,8 +1,10 @@
 substitutions:
   name: desk-clock
-  friendly_name: ESP Marquee Clock
+  friendly_name: ESP Desk Clock
+  device_comment: "D1 Mini Desk Clock"
   fonts_dir: ./fonts
   api_encryption_key: !secret desk_clock_encryption_key
+  ota_password: !secret desk_clock_ota_password
   spi_clk: GPIO14
   spi_mosi: GPIO13
   display_cs: GPIO15
@@ -21,7 +23,7 @@ time:
     id: sntp_time
 
 display:
-  - id: !extend: max7219digit_display
+  - id: !extend max7219digit_display
     num_chips: 4
     intensity: 5
     lambda: |-

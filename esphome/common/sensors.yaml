@@ -12,4 +12,4 @@ text_sensor:
 binary_sensor:
   - platform: status
     # Status for helping see if it is online
-    name: "${device_name} Status"
+    name: "${name} Status"

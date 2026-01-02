@@ -1,6 +1,6 @@
 ---
 packages:
-  spi: ./spi.yaml
+  spi: !include spi.yaml
 
 display:
   - id: max7219digit_display
