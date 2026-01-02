@@ -1,6 +1,6 @@
 ---
 substitutions:
-  device_name: kitchen-sink-light-switch
+  name: kitchen-sink-light-switch
   friendly_name: "Kitchen Sink Light"
   api_encryption_key: !secret kitchen_sink_light_switch_encryption_key
   ota_password: !secret kitchen_sink_light_switch_ota_password

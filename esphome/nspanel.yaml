@@ -1,6 +1,6 @@
 substitutions:
   # Settings - Editable values
-  device_name: "nspanel"
+  name: "nspanel"
   friendly_name: "Sonoff NSPanel"
   device_comment: "Sonoff NSPanel display"
   wifi_ssid: !secret wifi_ssid

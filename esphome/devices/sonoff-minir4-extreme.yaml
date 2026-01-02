@@ -1,3 +1,4 @@
+---
 substitutions:
   status_led_pin: "19"
   output_relay_pin: "26"
@@ -5,10 +6,8 @@ substitutions:
   input_pin: "27"
   device_comment: "Sonoff MiniR4 Extreme"
 
-esphome:
-  name: ${name}
-  friendly_name: ${friendly_name}
-  comment: ${device_comment}
+packages:
+  base: !include ../common/base.yaml
 
 esp32:
   board: esp32dev

@@ -1,0 +1,9 @@
+[env]
+MINIJINJA_CONFIG_FILE = "{{config_root}}/.minijinja.toml"
+_.file = ["{{config_root}}/.secrets.env", "~/.secrets.env"]
+
+[tools]
+"aqua:casey/just" = "1.45.0"
+"pipx:esphome/esphome" = "2025.12.3"
+"github:bitwarden/sdk" = "bws-v1.0.0"
+"github:mitsuhiko/minijinja" = "2.13.0"

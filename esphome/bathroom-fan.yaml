@@ -1,6 +1,6 @@
 ---
 substitutions:
-  device_name: bathroom-fan
+  name: bathroom-fan
   friendly_name: "Bathroom Fan"
   api_encryption_key: !secret bathroom_fan_encryption_key
   ota_password: !secret bathroom_fan_ota_password
@@ -10,6 +10,8 @@ esphome:
   name: ${device_name}
   friendly_name: ${friendly_name}
   comment: "Martin Jerry SS02"
+  api_encryption_key: !secret bathroom_fan_encryption_key
+  ota_password: !secret bathroom_fan_ota_password
 
 esp8266:
   board: esp8285
@@ -31,7 +33,7 @@ sensor:
           - lambda: |-
               if (x >= id(on_humidity_threshold_ui).state) {
                 id(fan_timer).execute();
-              } 
+              }
 
 number:
   - platform: template

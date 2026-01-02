@@ -1,12 +1,12 @@
 ---
 substitutions:
-  device_name: lilygo-lora32-915mhz
+  name: lilygo-lora32-915mhz
   friendly_name: "Lora32 915mhz"
   api_encryption_key: !secret lilygo_lora32_915mhz_encryption_key
   ota_password: !secret lilygo_lora32_915mhz_ota_password
 
 esphome:
-  name: $device_name
+  name: $name
   friendly_name: ${friendly_name}
   comment: "LILYGO LoRa32 915Mhz"
   # libraries:
@@ -37,7 +37,7 @@ esp32:
 <<: !include common/sensors.yaml
 <<: !include common/webserver.yaml
 
-packages: 
+packages:
   # this generally should be all what you need to add this rtl_433 component to esphome:
   rtl_433: github://juanboro/esphome-rtl_433-decoder/rtl_433.yaml
 
@@ -62,7 +62,7 @@ sx127x:
   frequency: 915000000
   modulation: FSK
   packet_mode: true
-  dio0_pin: 
+  dio0_pin:
     number: GPIO26
     mode:
       input: true
@@ -79,14 +79,14 @@ remote_receiver:
   idle: 10ms
   filter: 20us
   buffer_size: 2048
-  pin: 
+  pin:
     number: GPIO26
     mode:
       input: true
       output: true
       pullup: true
       open_drain: true
-    allow_other_uses: true 
+    allow_other_uses: true
   dump:
     - raw
 

@@ -1,5 +1,5 @@
 substitutions:
-  device_name: "basement-wall-outlet"
+  name: "basement-wall-outlet"
   friendly_name: "Basement Wall Outlet"
   api_encryption_key: !secret basement_wall_outlet_encryption_key
   ota_password: !secret basement_wall_outlet_ota_password
