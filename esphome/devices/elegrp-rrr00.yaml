@@ -81,7 +81,7 @@ switch:
     name: "Upper Outlet"
     pin: P9 # Incorrectly labeled P6 on PCB
     id: upperRelay
-    # restore_mode: ALWAYS_ON
+    restore_mode: ALWAYS_ON
     on_turn_on:
       - switch.turn_on: upperLED
     on_turn_off:
@@ -92,7 +92,7 @@ switch:
     name: "Lower Outlet"
     pin: P7 # Incorrectly labeled P24 on PCB
     id: lowerRelay
-    # restore_mode: ALWAYS_ON
+    restore_mode: ALWAYS_ON
     on_turn_on:
       - switch.turn_on: lowerLED
     on_turn_off:
