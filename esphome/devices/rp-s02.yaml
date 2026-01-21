@@ -1,0 +1,60 @@
+---
+# Original Tasmota configuration
+# http://mytasmota.com/forum/firmware/RP-S02_esp32c3.bin
+# {"NAME":"RP-S02 Switch","GPIO":[0,0,225,32,321,320,0,0,576,0,0,0,0,0,0,0,0,0,224,33,0,0],"FLAG":0,"BASE":1}
+substitutions:
+  button_1_pin: GPIO03
+  relay_1_pin: GPIO18
+  relay_1_status_pin: GPIO05
+  button_2_pin: GPIO19
+  relay_2_pin: GPIO02
+  relay_2_status_pin: GPIO04
+  device_status_pin: GPIO08
+
+packages:
+  base: !include ../common/base.yaml
+
+esp32:
+  variant: esp32c3
+  framework:
+    type: esp-idf
+
+status_led:
+  pin:
+    number: $device_status_pin
+    inverted: true
+
+output:
+  - platform: gpio
+    pin: $relay_1_pin
+    id: relay_1
+  - platform: gpio
+    pin: $relay_2_pin
+    id: relay_2
+
+switch:
+  - platform: gpio
+    pin:
+      number: $relay_1_status_pin
+      inverted: true
+    id: relay_1_status
+    internal: true
+  - platform: gpio
+    pin:
+      number: $relay_2_status_pin
+      inverted: true
+    id: relay_2_status
+    internal: true
+
+binary_sensor:
+  - platform: gpio
+    pin: $button_1_pin
+    id: button_1
+    filters:
+      - delayed_off: 50ms
+  - platform: gpio
+    pin: $button_2_pin
+    id: button_2
+    filters:
+      - delayed_off: 50ms
+

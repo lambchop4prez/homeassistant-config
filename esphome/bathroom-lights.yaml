@@ -1,0 +1,40 @@
+---
+substitutions:
+  name: bathroom-lights
+  friendly_name: "Bathroom Lights"
+  api_encryption_key: !secret bathroom_lights_encryption_key
+  ota_password: !secret bathroom_lights_ota_password
+  device_comment: "Martin Jerry SS02 Light Switch"
+
+packages:
+  device: !include ./devices/rp-s02.yaml
+
+light:
+  - platform: binary
+    id: light_1
+    name: "Vanity Light"
+    icon: mdi:ceiling-light
+    output: relay_1
+    on_turn_on:
+      - switch.turn_on: relay_1_status
+    on_turn_off:
+      - switch.turn_off: relay_1_status
+
+  - platform: binary
+    id: light_2
+    name: "Bathtub Light"
+    icon: mdi:bathtub
+    output: relay_2
+    on_turn_on:
+      - switch.turn_on: relay_2_status
+    on_turn_off:
+      - switch.turn_off: relay_2_status
+
+
+binary_sensor:
+  - id: !extend button_1
+    on_press:
+      - light.toggle: light_1
+  - id: !extend button_2
+    on_press:
+      - light.toggle: light_2
