@@ -1,0 +1,21 @@
+---
+substitutions:
+  name: basement-lights
+  friendly_name: "Basement Light Switch"
+  api_encryption_key: !secret basement_lights_encryption_key
+  ota_password: !secret basement_lights_ota_password
+  device_comment: "Martin Jerry SS01 Light Switch"
+
+packages:
+  device: !include ./devices/rp-s01.yaml
+
+light:
+  - platform: binary
+    id: light_1
+    name: "Basement Lights"
+    output: relay_1
+
+binary_sensor:
+  - id: !extend button_1
+    on_press:
+      - light.toggle: light_1
