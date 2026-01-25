@@ -1,0 +1,4 @@
+font:
+  - file: "./fonts/${name}"
+    id: ${id}
+    size: ${size}

@@ -1,0 +1,21 @@
+sun:
+  id: sun1
+  longitude: !secret longitude
+  latitude: !secret latitude
+
+text_sensor:
+  - platform: sun
+    name: Next Sunrise
+    type: sunrise
+    id: sunrise
+    format: "%H:%M"
+    internal: true
+    update_interval: 6h
+
+  - platform: sun
+    name: Next Sunset
+    type: sunset
+    id: sunset
+    format: "%H:%M"
+    internal: true
+    update_interval: 6h

@@ -1,0 +1,6 @@
+font:
+  - file: "./fonts/materialdesignicons-webfont.ttf"
+    id: ${id}
+    size: ${size}
+    glyphs: $glyphs 
+    

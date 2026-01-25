@@ -24,7 +24,7 @@ uart:
 sensor:
   - platform: bl0942
     voltage:
-      name: '${device_name} Outlet Voltage'
+      name: '${friendly_name} Outlet Voltage'
       accuracy_decimals: 3
       filters:
       - sliding_window_moving_average:
@@ -32,7 +32,7 @@ sensor:
           send_every: 64
           send_first_at: 64
     frequency:
-      name: "${device_name} Outlet Frequency"
+      name: "${friendly_name} Outlet Frequency"
       accuracy_decimals: 3
       filters:
       - sliding_window_moving_average:
@@ -40,7 +40,7 @@ sensor:
           send_every: 64
           send_first_at: 64
     current:
-      name: '${device_name} Outlet Total Current'
+      name: '${friendly_name} Outlet Total Current'
       accuracy_decimals: 3
       filters:
       - sliding_window_moving_average:
@@ -48,10 +48,10 @@ sensor:
           send_every: 64
           send_first_at: 64
     power:
-      name: '${device_name} Outlet Total Power'
+      name: '${friendly_name} Outlet Total Power'
       accuracy_decimals: 3
     energy:
-      name: '${device_name} Outlet Total Energy'
+      name: '${friendly_name} Outlet Total Energy'
       accuracy_decimals: 3
 
 binary_sensor:

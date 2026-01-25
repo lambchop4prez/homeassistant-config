@@ -1,0 +1,565 @@
+substitutions:
+  display_width: 800
+  display_height: 480
+
+esphome:
+  name: trmnl-host
+
+host:
+
+packages:
+  # time: !include ./components/ntp.yaml
+  # sun: !include ./components/sun.yaml
+  font_large: !include
+    file: ./components/font.yaml
+    vars:
+      name: IntoneMonoNerdFontMono-Medium.ttf
+      size: 36
+      id: font_large
+  font_small: !include
+    file: ./components/font.yaml
+    vars:
+      name: IntoneMonoNerdFontMono-Regular.ttf
+      size: 18
+      id: font_small
+  font_small_medium: !include
+    file: ./components/font.yaml
+    vars:
+      name: IntoneMonoNerdFont-Bold.ttf
+      size: 20
+      id: font_small_medium
+  font_icons_tiny: !include
+    file: ./components/icons.yaml
+    vars:
+      id: font_icons_tiny
+      size: 18
+      glyphs:
+        - "\U000F091F" # wifi low
+        - "\U000F0922" # wifi med
+        - "\U000F0925" # wifi high
+        - "\U000F0928" # wifi max
+        - "\U000F092E" # wifi disconnected
+        - "\U000F0079" # Battery 100%
+        - "\U000F0082" # Battery 90%
+        - "\U000F0081" # Battery 80%
+        - "\U000F0080" # Battery 70%
+        - "\U000F007F" # Battery 60%
+        - "\U000F007E" # Battery 50%
+        - "\U000F007D" # Battery 40%
+        - "\U000F007C" # Battery 30%
+        - "\U000F007B" # Battery 20%
+        - "\U000F007A" # Battery 10%
+        - "\U000F05A9" # Wifi On
+        - "\U000F05AA" # Wifi Off
+  font_current_conditions: !include
+    file: ./components/icons.yaml
+    vars:
+      id: font_current_conditions
+      size: 96
+      glyphs:
+        - "\U000F0594" # clear-night
+        - "\U000F0590" # cloudy
+        - "\U000F0595" # partlycloudy
+        - "\U000F0591" # fog
+        - "\U000F0592" # hail
+        - "\U000F0593" # lightning
+        - "\U000F067E" # lightning-rainy
+        - "\U000F0596" # pouring
+        - "\U000F0597" # rainy
+        - "\U000F0F36" # snowy
+        - "\U000F067F" # snowy-rainy
+        - "\U000F0599" # sunny
+        - "\U000F059D" # windy
+        - "\U000F059E" # windy-variant
+        - "\U000F0F38" # exceptional
+        - "\U000F14E4" # unknown
+  font_current_conditions_small: !include
+    file: ./components/icons.yaml
+    vars:
+      id: font_current_conditions_small
+      size: 64
+      glyphs:
+        - "\U000F0594" # clear-night
+        - "\U000F0590" # cloudy
+        - "\U000F0595" # partlycloudy
+        - "\U000F0591" # fog
+        - "\U000F0592" # hail
+        - "\U000F0593" # lightning
+        - "\U000F067E" # lightning-rainy
+        - "\U000F0596" # pouring
+        - "\U000F0597" # rainy
+        - "\U000F0F36" # snowy
+        - "\U000F067F" # snowy-rainy
+        - "\U000F0599" # sunny
+        - "\U000F059D" # windy
+        - "\U000F059E" # windy-variant
+        - "\U000F0F38" # exceptional
+        - "\U000F14E4" # unknown
+  font_icons: !include
+    file: ./components/icons.yaml
+    vars:
+      id: font_icons
+      size: 24
+      glyphs:
+        - "\U000F10C2" # Temperature High
+        - "\U000F10C3" # Temperature Low
+        - "\U000F050F" # Thermometer
+        - "\U000F07E4" # CO2
+        - "\U000F054B" # umbrella
+        - "\U000F0592" # hail
+        - "\U000F0593" # lightning
+        - "\U000F067E" # lightning-rainy
+        - "\U000F0597" # rainy
+        - "\U000F0F36" # snowy
+        - "\U000F0594" # clear-night
+        - "\U000F0599" # sunny
+        - "\U000F07CA" # fuel
+        - "\U000F024A" # flower
+        - "\U000F051F" # time-remaining
+        - "\U000F140B" # Energy
+        - "\U000F059B" # Sunset
+        - "\U000F059C" # Sunrise
+        - "\U000F0BAC" # Molecule (VOC)
+        - "\U000F0079" # Battery full
+        - "\U000F058E" # % drop (RH)
+        - "\U000F029A" # gague
+        - "\U000F091F" # wifi low
+        - "\U000F0922" # wifi med
+        - "\U000F0925" # wifi high
+        - "\U000F0928" # wifi max
+        - "\U000F092E" # wifi disconnected
+image:
+  - file: ./images/doof.png
+    id: bidoof
+    resize: 200x200
+    type: BINARY
+    dither: FLOYDSTEINBERG
+    invert_alpha: true
+display:
+  - platform: sdl
+    id: display_epaper_sdl
+    # show_test_card: true
+    dimensions:
+      width: $display_width
+      height: $display_height
+
+lvgl:
+  theme:
+    label:
+      text_font: font_small
+  buffer_size: "12%"
+  displays:
+    - display_epaper_sdl
+  top_layer:
+    widgets:
+      - obj:
+          bg_opa: TRANSP
+          border_opa: TRANSP
+          pad_all: 0
+          layout:
+            type: flex
+            flex_flow: row
+            flex_align_main: SPACE_BETWEEN
+            flex_align_track: CENTER
+            flex_align_cross: stretch
+          x: 3
+          y: 1
+          width: $display_width
+          height: 36
+          # outline_width: 1
+          widgets:
+            - label:
+                text: "\U000F007E"
+                text_font: font_icons_tiny
+            - label:
+                text: "Mon Jan 19 2026"
+            - label:
+                text: "\U000F05AA"
+                text_font: font_icons_tiny
+
+  pages:
+    - id: main_page
+      widgets:
+        - obj:
+            align: CENTER
+            width: $display_width
+            height: $display_height
+            bg_opa: TRANSP
+            border_opa: TRANSP
+            pad_top: 36
+            layout:
+              type: grid
+              grid_rows: [FR(1), FR(1)]
+              grid_columns: [FR(2), FR(1), FR(1), FR(2)]
+              pad_column: 0
+              pad_row: 0
+            widgets:
+
+              - obj: # Left column
+                  bg_opa: TRANSP
+                  border_opa: TRANSP
+                  grid_cell_row_pos: 0
+                  grid_cell_column_pos: 1
+                  grid_cell_column_span: 2
+                  grid_cell_x_align: STRETCH
+                  grid_cell_y_align: STRETCH
+                  # outline_width: 1 
+                  layout:
+                    pad_column: 5
+                    pad_row: 5
+                    type: GRID
+                    #             0   ,   1   ,   2   ,   3   ,   4   ,   5
+                    grid_rows: [FR(20), FR(20), FR(20), FR(20), FR(20)]
+                    #                0   ,    1  ,   2   ,   3   ,   4   ,    5
+                    grid_columns: [FR(10), FR(30), FR(10), FR(10), FR(30), FR(10)]
+                    
+                  widgets:
+                    # Row 0/1
+                    - label:
+                        text: "\U000F0595"
+                        id: lbl_weather_forecast_condition_icon
+                        text_font: font_current_conditions
+                        text_align: CENTER
+                        grid_cell_row_pos: 0
+                        grid_cell_row_span: 2
+                        grid_cell_column_pos: 0
+                        grid_cell_column_span: 2
+                        grid_cell_x_align: CENTER
+                        grid_cell_y_align: CENTER
+
+                    - label:
+                        text: "--.-°"
+                        text_font: font_large
+                        id: lbl_weather_forecast_temp
+                        text_align: RIGHT
+                        grid_cell_row_pos: 0
+                        grid_cell_column_pos: 3
+                        grid_cell_column_span: 3
+                        grid_cell_x_align: STRETCH
+                        grid_cell_y_align: END
+
+                    # Row 2
+                    - label:
+                        text: "\U000F10C2"
+                        text_font: font_icons
+                        grid_cell_row_pos: 2
+                        grid_cell_column_pos: 0
+                        
+                    - label:
+                        text: "--°"
+                        id: lbl_weather_forecast_temphigh
+                        grid_cell_row_pos: 2
+                        grid_cell_column_pos: 1
+                        grid_cell_column_span: 2
+
+                    - label:
+                        text: "\U000F10C3"
+                        text_font: font_icons
+                        grid_cell_row_pos: 2
+                        grid_cell_column_pos: 3
+                    - label:
+                        text: "--°"
+                        id: lbl_weather_forecast_templow
+                        grid_cell_row_pos: 2
+                        grid_cell_column_pos: 4
+                        grid_cell_column_span: 2
+                    
+                    # # Row 3
+
+                    - label:
+                        text: "\U000F058E"
+                        text_font: font_icons
+                        text_align: RIGHT
+                        grid_cell_row_pos: 3
+                        grid_cell_column_pos: 0
+                    - label:
+                        text: "--%"
+                        id: lbl_weather_forecast_humidity
+                        text_align: RIGHT
+                        grid_cell_row_pos: 3
+                        grid_cell_column_pos: 1
+                        grid_cell_column_span: 2
+
+                    - label:
+                        text: "\U000F029A"
+                        text_font: font_icons
+                        text_align: RIGHT
+                        grid_cell_row_pos: 3
+                        grid_cell_column_pos: 3
+                    - label:
+                        text: "--"
+                        id: lbl_weather_forecast_pressure
+                        text_align: RIGHT
+                        grid_cell_row_pos: 3
+                        grid_cell_column_pos: 4
+                        grid_cell_column_span: 2
+
+                    # # Row 4
+                    - label:
+                        text: "Pressure:"
+                        grid_cell_row_pos: 4
+                        grid_cell_column_pos: 0
+                        grid_cell_column_span: 2
+                    
+                    - label:
+                        text: "15.0 PSI"
+                        grid_cell_row_pos: 4
+                        grid_cell_column_pos: 3
+                        grid_cell_column_span: 2
+
+              - obj:
+                  bg_opa: TRANSP
+                  border_opa: TRANSP
+                  grid_cell_row_pos: 1
+                  grid_cell_column_pos: 0
+                  grid_cell_column_span: 2
+                  grid_cell_x_align: STRETCH
+                  grid_cell_y_align: STRETCH
+                  layout:
+                    type: grid
+                    grid_rows: [FR(10), FR(30), FR(20), FR(20)]
+                    grid_columns: [FR(20), FR(20), FR(20), FR(20), FR(20)]
+                  widgets:
+                    - label:
+                        grid_cell_row_pos: 0
+                        grid_cell_column_pos: 0
+                        grid_cell_x_align: STRETCH
+                        grid_cell_y_align: STRETCH
+                        # outline_width: 1 
+                        text_align: CENTER
+                        text: "Sun"
+                    - label:
+                        grid_cell_row_pos: 0
+                        grid_cell_column_pos: 1
+                        grid_cell_x_align: STRETCH
+                        grid_cell_y_align: STRETCH
+                        # outline_width: 1 
+                        text_align: CENTER
+                        text: "Mon"
+                    - label:
+                        grid_cell_row_pos: 0
+                        grid_cell_column_pos: 2
+                        grid_cell_x_align: STRETCH
+                        grid_cell_y_align: STRETCH
+                        # outline_width: 1 
+                        text_align: CENTER
+                        text: "Tue"
+                    - label:
+                        grid_cell_row_pos: 0
+                        grid_cell_column_pos: 3
+                        grid_cell_x_align: STRETCH
+                        grid_cell_y_align: STRETCH
+                        # outline_width: 1 
+                        text_align: CENTER
+                        text: "Wed"
+                    - label:
+                        grid_cell_row_pos: 0
+                        grid_cell_column_pos: 4
+                        grid_cell_x_align: STRETCH
+                        grid_cell_y_align: STRETCH
+                        # outline_width: 1 
+                        text_align: CENTER
+                        text: "Thu"
+                      
+                    - label:
+                        grid_cell_row_pos: 1
+                        grid_cell_column_pos: 0
+                        grid_cell_x_align: STRETCH
+                        grid_cell_y_align: STRETCH
+                        # outline_width: 1 
+                        text_font: font_current_conditions_small
+                        text: "\U000F14E4"
+                    - label:
+                        grid_cell_row_pos: 1
+                        grid_cell_column_pos: 1
+                        grid_cell_x_align: STRETCH
+                        grid_cell_y_align: STRETCH
+                        # outline_width: 1 
+                        text_font: font_current_conditions_small
+                        text: "\U000F14E4"
+                    - label:
+                        grid_cell_row_pos: 1
+                        grid_cell_column_pos: 2
+                        grid_cell_x_align: STRETCH
+                        grid_cell_y_align: STRETCH
+                        # outline_width: 1 
+                        text_font: font_current_conditions_small
+                        text: "\U000F14E4"
+                    - label:
+                        grid_cell_row_pos: 1
+                        grid_cell_column_pos: 3
+                        grid_cell_x_align: STRETCH
+                        grid_cell_y_align: STRETCH
+                        # outline_width: 1 
+                        text_font: font_current_conditions_small
+                        text: "\U000F14E4"
+                    - label:
+                        grid_cell_row_pos: 1
+                        grid_cell_column_pos: 4
+                        grid_cell_x_align: STRETCH
+                        grid_cell_y_align: STRETCH
+                        # outline_width: 1 
+                        text_font: font_current_conditions_small
+                        text: "\U000F14E4"
+
+                    - label:
+                        grid_cell_row_pos: 2
+                        grid_cell_column_pos: 0
+                        grid_cell_x_align: STRETCH
+                        grid_cell_y_align: STRETCH
+                        text_align: CENTER
+                        # outline_width: 1
+                        text_font: font_small_medium
+                        text: "--°"
+                    - label:
+                        grid_cell_row_pos: 2
+                        grid_cell_column_pos: 1
+                        grid_cell_x_align: STRETCH
+                        grid_cell_y_align: STRETCH
+                        text_align: CENTER
+                        # outline_width: 1
+                        text_font: font_small_medium
+                        text: "--°"
+                    - label:
+                        grid_cell_row_pos: 2
+                        grid_cell_column_pos: 2
+                        grid_cell_x_align: STRETCH
+                        grid_cell_y_align: STRETCH
+                        text_align: CENTER
+                        # outline_width: 1
+                        text_font: font_small_medium
+                        text: "--°"
+                    - label:
+                        grid_cell_row_pos: 2
+                        grid_cell_column_pos: 3
+                        grid_cell_x_align: STRETCH
+                        grid_cell_y_align: STRETCH
+                        text_align: CENTER
+                        # outline_width: 1
+                        text_font: font_small_medium
+                        text: "--°"
+                    - label:
+                        grid_cell_row_pos: 2
+                        grid_cell_column_pos: 4
+                        grid_cell_x_align: STRETCH
+                        grid_cell_y_align: STRETCH
+                        text_align: CENTER
+                        # outline_width: 1
+                        text_font: font_small_medium
+                        text: "--°"
+                    
+                    - label:
+                        grid_cell_row_pos: 3
+                        grid_cell_column_pos: 0
+                        grid_cell_x_align: STRETCH
+                        grid_cell_y_align: STRETCH
+                        text_align: CENTER
+                        # outline_width: 1
+                        text_font: font_small
+                        text: "--°"
+                    - label:
+                        grid_cell_row_pos: 3
+                        grid_cell_column_pos: 1
+                        grid_cell_x_align: STRETCH
+                        grid_cell_y_align: STRETCH
+                        text_align: CENTER
+                        # outline_width: 1
+                        text_font: font_small
+                        text: "--°"
+                    - label:
+                        grid_cell_row_pos: 3
+                        grid_cell_column_pos: 2
+                        grid_cell_x_align: STRETCH
+                        grid_cell_y_align: STRETCH
+                        text_align: CENTER
+                        # outline_width: 1
+                        text_font: font_small
+                        text: "--°"
+                    - label:
+                        grid_cell_row_pos: 3
+                        grid_cell_column_pos: 3
+                        grid_cell_x_align: STRETCH
+                        grid_cell_y_align: STRETCH
+                        text_align: CENTER
+                        # outline_width: 1
+                        text_font: font_small
+                        text: "--°"
+                    - label:
+                        grid_cell_row_pos: 3
+                        grid_cell_column_pos: 4
+                        grid_cell_x_align: STRETCH
+                        grid_cell_y_align: STRETCH
+                        text_align: CENTER
+                        # outline_width: 1
+                        text_font: font_small
+                        text: "--°"
+              - obj: # Wind bearing
+                  bg_opa: TRANSP
+                  border_opa: TRANSP
+                  grid_cell_row_pos: 0
+                  grid_cell_column_pos: 3
+                  outline_width: 1
+                  pad_all: 0
+                  grid_cell_x_align: STRETCH
+                  grid_cell_y_align: STRETCH
+                  layout:
+                    type: flex
+                    flex_flow: COLUMN
+                    flex_align_track: CENTER
+                  widgets:
+                    - obj: # Compass container
+                        bg_opa: TRANSP
+                        border_opa: TRANSP
+                        height: SIZE_CONTENT
+                        width: 200
+                        # align: CENTER
+                        pad_all: 0
+                        border_width: 0
+                        outline_width: 1
+                        widgets:
+                          - meter: # Compass
+                              height: 200
+                              width: 200
+                              align: CENTER
+                              bg_opa: TRANSP
+                              border_opa: TRANSP
+                              border_width: 0
+                              scales:
+                                - range_from: 0
+                                  range_to: 360
+                                  angle_range: 360
+                                  rotation: 270
+                                  ticks:
+                                    width: 1
+                                    count: 180
+                                    length: 10
+                                    major:
+                                      length: 10
+                                      stride: 45
+                                      label_gap: 12
+                                  indicators:
+                                    - line:
+                                        id: wind_bearing
+                                        width: 3
+                                        r_mod: -5
+                                        value: 233
+
+              - obj: # Right column
+                  bg_opa: TRANSP
+                  border_opa: TRANSP
+                  grid_cell_row_pos: 0
+                  grid_cell_column_pos: 0
+                  grid_cell_x_align: STRETCH
+                  grid_cell_y_align: STRETCH
+                  # outline_width: 1
+                  pad_all: 0
+                  layout:
+                    type: flex
+                    flex_flow: COLUMN
+                    flex_align_track: CENTER
+                  widgets:
+                    - label:
+                        text: "Doof"
+                    - image:
+                        # outline_width: 1
+                        src: bidoof
