@@ -5,9 +5,15 @@ substitutions:
   api_encryption_key: !secret basement_lights_encryption_key
   ota_password: !secret basement_lights_ota_password
   device_comment: "Martin Jerry SS01 Light Switch"
+  # Higher value gives lower watt readout
+  current_res: "0.00106"
+  # Lower value gives lower voltage readout
+  voltage_div: "1570"
+  current_mul: "0.914285714285714" # Muliplier for current sensor filter. Calibrate for higher accuracy.
 
 packages:
   device: !include ./devices/rp-s01.yaml
+  time: !include ./components/ntp.yaml
 
 light:
   - platform: binary

@@ -1,3 +1,7 @@
+---
+# Original Tasmota configuration
+# {"NAME":"RP-S01 Switch","GPIO":[0,0,2624,2656,2720,321,0,0,0,0,0,0,0,0,0,0,0,0,224,32,0,0],"FLAG":0,"BASE":1}
+# http://mytasmota.com/forum/firmware/RP-S01_esp32c3.bin
 substitutions:
   button_1_pin: GPIO19
   relay_1_pin: GPIO18
@@ -41,12 +45,27 @@ sensor:
     sel_pin: $hlw8012_sel_pin
     cf_pin: $hlw8012_cf_pin
     cf1_pin: $hlw8012_cf1_pin
+    update_interval: 10s
     current:
       name: "${friendly_name} Current"
+      unit_of_measurement: A
+      accuracy_decimals: 2
+      filters:
+        - multiply: ${current_mul}
     voltage:
       name: "${friendly_name} Voltage"
+      unit_of_measurement: V
+      accuracy_decimals: 1
     power:
       name: "${friendly_name} Power"
-    energy:
-      name: "${friendly_name} Energy"
-    update_interval: 60s
+      unit_of_measurement: W
+      accuracy_decimals: 0
+      id: switch_power
+    current_resistor: ${current_res}
+    voltage_divider: ${voltage_div}
+  - platform: total_daily_energy
+    name: "${friendly_name} Daily Energy"
+    power_id: switch_power
+    filters:
+      - multiply: 0.001 ## convert Wh to kWh
+    unit_of_measurement: kWh
