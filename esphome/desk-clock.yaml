@@ -8,25 +8,53 @@ substitutions:
   spi_clk: GPIO14
   spi_mosi: GPIO13
   display_cs: GPIO15
+  i2s_sda: GPIO04
+  i2s_scl: GPIO05
+  adc_pin: A0
 
 packages:
   device: !include ./devices/wemos-d1-mini.yaml
   display: !include ./components/max7219digit.yaml
+esphome:
+  on_boot:
+    then:
+      # read the RTC time once when the system boots
+      ds1307.read_time:
 
+time:
+  - platform: ds1307
+    id: rtc_time
+    # repeated synchronization is not necessary unless the external RTC
+    # is much more accurate than the internal clock
+    update_interval: never
+  - platform: sntp
+    # instead try to synchronize via network repeatedly ...
+    on_time_sync:
+      then:
+        # ... and update the RTC when the synchronization was successful
+        ds1307.write_time:
 font:
   - file: "${fonts_dir}/Early GameBoy.ttf"
     id: digit_font
     size: 8
-
-time:
-  - platform: sntp
-    id: sntp_time
-
+i2c:
+  sda: $i2s_sda
+  scl: $i2s_scl
 display:
   - id: !extend max7219digit_display
     num_chips: 4
     intensity: 5
     lambda: |-
-      it.strftime(0, -1, id(digit_font), "%H", id(sntp_time).now());
+      it.strftime(0, -1, id(digit_font), "%H", id(rtc_time).now());
       it.print(14, -1, id(digit_font), ":");
-      it.strftime(18, -1, id(digit_font), "%M", id(sntp_time).now());
+      it.strftime(18, -1, id(digit_font), "%M", id(rtc_time).now());
+
+sensor:
+  - platform: adc
+    pin: $adc_pin
+    name: "Illuminance"
+    device_class: illuminance
+    unit_of_measurement: lx
+    filters:
+      - lambda: |-
+          return (x / 10000.0) * 2000000.0;
