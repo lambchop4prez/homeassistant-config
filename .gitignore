@@ -9,3 +9,7 @@ fonts
 .venv
 .direnv
 .storage
+*.lock
+*.db*
+.HA_VERSION
+blueprints/automation/Blackymas
