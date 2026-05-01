@@ -13,3 +13,5 @@ fonts
 *.db*
 .HA_VERSION
 blueprints/automation/Blackymas
+.cache
+custom_components
