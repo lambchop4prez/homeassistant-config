@@ -1,1 +1,14 @@
-[]
+- id: "1769397032037"
+  alias: Water leak
+  description: "Send alert when water leak is detected"
+  triggers:
+    - trigger: state
+      entity_id: binary_sensor.shellyflood_c45bbe6ba52b_flood
+      to: Wet
+  conditions: []
+  actions:
+    - action: notify.notify
+      metadata: {}
+      data:
+        message: Water leak!
+  mode: single
