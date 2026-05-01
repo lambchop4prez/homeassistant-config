@@ -1,0 +1,22 @@
+---
+substitutions:
+  name: lava-lamp-yellow-purple
+  friendly_name: Lava Lamp
+  api_encryption_key: !secret lava_lamp_1_encryption_key
+  ota_password: !secret lava_lamp_1_ota_password
+
+packages:
+  device: !include devices/sonoff-basic.yaml
+
+light:
+  - platform: binary
+    id: light_1
+    icon: mdi:lava-lamp
+    name: "$friendly_name Light"
+    output: relay
+
+binary_sensor:
+  - id: !extend button
+    on_press:
+      - light.toggle: light_1
+
