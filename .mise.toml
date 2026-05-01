@@ -3,7 +3,7 @@ MINIJINJA_CONFIG_FILE = "{{config_root}}/.minijinja.toml"
 _.file = ["{{config_root}}/.secrets.env", "~/.secrets.env"]
 
 [tools]
-"aqua:casey/just" = "1.45.0"
-"pipx:esphome/esphome" = "2026.1.0"
+"aqua:casey/just" = "1.50.0"
+"pipx:esphome/esphome" = "2026.4.1"
 "github:bitwarden/sdk" = "bws-v1.0.0"
 "github:mitsuhiko/minijinja" = "2.13.0"
