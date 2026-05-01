@@ -17,10 +17,20 @@ substitutions:
 packages:
   base: !include ../common/base.yaml
 
+esphome:
+  platformio_options:
+    board_build.mcu: esp32c3
+    board_build.variant: esp32c3  
+# added the line below to prevent bootloops when flashing modern bin via serial
+    board_build.flash_mode: dio     
 esp32:
   variant: esp32c3
   framework:
     type: esp-idf
+    sdkconfig_options:
+      CONFIG_BT_BLE_50_FEATURES_SUPPORTED: y
+      CONFIG_BT_BLE_42_FEATURES_SUPPORTED: y
+      CONFIG_ESP_TASK_WDT_TIMEOUT_S: "10"   
 
 output:
   - platform: gpio
