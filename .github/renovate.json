@@ -1,0 +1,30 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": [
+    "github>lambchop4prez/renovate-config",
+    "github>lambchop4prez/network//.renovate/groups.json",
+    "github>lambchop4prez/network//.renovate/overrides.json"
+  ],
+  "flux": {
+    "managerFilePatterns": ["/^cluster/.+\\.ya?ml$/"]
+  },
+  "helm-values": {
+    "managerFilePatterns": ["/^cluster/.+\\.ya?ml$/"]
+  },
+  "kubernetes": {
+    "managerFilePatterns": ["/^cluster/.+\\.ya?ml$/"]
+  },
+  "lockFileMaintenance": {
+    "automerge": true
+  },
+  "packageRules": [
+    {
+      "matchDatasources": ["github-releases"],
+      "automerge": true,
+      "automergeType": "branch",
+      "ignoreTests": true,
+      "matchUpdateTypes": ["patch"]
+    }
+
+  ]
+}

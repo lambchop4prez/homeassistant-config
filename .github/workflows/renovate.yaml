@@ -1,0 +1,45 @@
+---
+name: Renoate Dependency Update
+
+on:
+  workflow_call:
+    inputs:
+      dryRun:
+        description: 'Dry-Run'
+        default: false
+        required: false
+        type: boolean
+  schedule:
+    - cron: '31 3 * * *'
+  push:
+    branches:
+      - main
+      - develop
+    paths:
+      - '.github/renovate.json'
+      - '.github/renovate/**.json'
+
+concurrency:
+    group: ${{ github.workflow }}-${{ github.ref }}
+    cancel-in-progress: true
+
+permissions: {}
+
+env:
+  RENOVATE_AUTODISCOVER: true
+  RENOVATE_AUTODISCOVER_FILTER: '${{ github.repository }}'
+  RENOVATE_DRY_RUN: '${{ inputs.dryRun == true }}'
+  RENOVATE_PLATFORM: github
+  RENOVATE_PLATFORM_COMMIT: true
+  RENOVATE_DETECT_HOST_RULES_FROM_ENV: true
+
+jobs:
+  renovate:
+    name: renovate
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
+
+      - name: Renovate
+        uses: renovatebot/github-action@8ac70de2fe55752c573155866e30735411e3b61c # 41.0.22
