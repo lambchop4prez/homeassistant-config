@@ -1,0 +1,62 @@
+#include <string>
+using namespace std;
+static std::map<string, string> condition_icons = {
+    {"clear-night", "\U000F0594"},
+    {"cloudy", "\U000F0590"},
+    {"fog", "\U000F0591"},
+    {"hail", "\U000F0592"},
+    {"lightning", "\U000F0593"},
+    {"lightning-rainy", "\U000F067E"},
+    {"partlycloudy", "\U000F0595"},
+    {"pouring", "\U000F0596"},
+    {"rainy", "\U000F0597"},
+    {"snowy", "\U000F0F36"},
+    {"snowy-rainy", "\U000F067F"},
+    {"sunny", "\U000F0599"},
+    {"windy", "\U000F059D"},
+    {"windy-variant", "\U000F059E"},
+    {"exceptional", "\U000F0F38"}
+};
+static std::map<string, string> night_condition_icons = {
+    {"clear-night", "\U000F0594"},
+    {"cloudy", "\U000F0590"},
+    {"fog", "\U000F0591"},
+    {"hail", "\U000F0592"},
+    {"lightning", "\U000F0593"},
+    {"lightning-rainy", "\U000F067E"},
+    {"partlycloudy", "\U000F0F31"},
+    {"pouring", "\U000F0596"},
+    {"rainy", "\U000F0597"},
+    {"snowy", "\U000F0F36"},
+    {"snowy-rainy", "\U000F067F"},
+    {"sunny", "\U000F0599"},
+    {"windy", "\U000F059D"},
+    {"windy-variant", "\U000F059E"},
+    {"exceptional", "\U000F0594"}
+};
+static std::string hour_icons[24] = {
+  "\U000F144A",
+  "\U000F143F",
+  "\U000F1440",
+  "\U000F1441",
+  "\U000F1442",
+  "\U000F1443",
+  "\U000F1444",
+  "\U000F1445",
+  "\U000F1446",
+  "\U000F1447",
+  "\U000F1448",
+  "\U000F1449",
+  "\U000F144A",
+  "\U000F143F",
+  "\U000F1440",
+  "\U000F1441",
+  "\U000F1442",
+  "\U000F1443",
+  "\U000F1444",
+  "\U000F1445",
+  "\U000F1446",
+  "\U000F1447",
+  "\U000F1448",
+  "\U000F1449"
+};

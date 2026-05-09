@@ -1,0 +1,21 @@
+substitutions:
+  display_cs: GPIO44
+  display_dc: GPIO10
+  display_reset: GPIO38
+  display_busy: GPIO4
+  display_width: 800
+  display_height: 480
+
+display:
+  - platform: waveshare_epaper
+    id: display_main
+    model: 7.50inv2
+    cs_pin: $display_cs
+    dc_pin: $display_dc
+    reset_pin: $display_reset
+    busy_pin:
+      number: $display_busy
+      inverted: true
+    reset_duration: 2ms
+    update_interval: 300s
+    auto_clear_enabled: false

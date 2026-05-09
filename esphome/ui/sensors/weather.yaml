@@ -1,0 +1,24 @@
+---
+api:
+  on_client_connected:
+    - script.execute: daily_forecast
+packages:
+  current: !include ./weather/current.yaml
+  daily: !include ./weather/daily.yaml
+  hourly: !include ./weather/hourly.yaml
+text_sensor:
+- platform: homeassistant
+  entity_id: weather.forecast_home
+  id: current_condition
+  internal: true
+  on_value:
+    then:
+      - lvgl.label.update:
+          id: lbl_weather_forecast_condition_icon
+          text: !lambda |
+            if (id(sun1).is_above_horizon()) {
+              return condition_icons[x.c_str()].c_str();
+            }
+            return night_condition_icons[x.c_str()].c_str();
+      - script.execute: daily_forecast
+      - script.execute: hourly_forecast

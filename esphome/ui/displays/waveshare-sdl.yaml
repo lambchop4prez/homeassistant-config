@@ -1,0 +1,6 @@
+display:
+  - platform: sdl
+    id: display_main
+    dimensions:
+      width: $display_width
+      height: $display_height

@@ -1,0 +1,293 @@
+script:
+  - id: hourly_forecast
+    then:
+      - homeassistant.action:
+          action: weather.get_forecasts
+          data:
+            entity_id: weather.forecast_home
+            type: hourly
+          capture_response: true
+          on_success:
+            - lambda: |-
+                esphome::template_::TemplateTextSensor* hours[5] = {
+                  id(hourly_hour_1),
+                  id(hourly_hour_2),
+                  id(hourly_hour_3),
+                  id(hourly_hour_4),
+                  id(hourly_hour_5)
+                };
+
+                esphome::template_::TemplateTextSensor* conditions[5] = {
+                  id(hourly_condition_1),
+                  id(hourly_condition_2),
+                  id(hourly_condition_3),
+                  id(hourly_condition_4),
+                  id(hourly_condition_5)
+                };
+                esphome::template_::TemplateTextSensor* temps[5] = {
+                  id(hourly_temp_1),
+                  id(hourly_temp_2),
+                  id(hourly_temp_3),
+                  id(hourly_temp_4),
+                  id(hourly_temp_5)
+                };
+
+                uint8_t hour = id(current_time).now().hour;
+                for(int i = 1; i <= 5; i++)
+                {
+                  hour++;
+                  if (hour == 24) {
+                    hour = 0;
+                  }
+                  JsonObjectConst next_hour = response["response"]["weather.forecast_home"]["forecast"][i];
+                  ESP_LOGI("weather", "%d", next_hour.size());
+                  hours[i-1]->publish_state(hour_icons[hour]);
+                  conditions[i-1]->publish_state(condition_icons[next_hour["condition"].as<string>()].c_str());
+                  temps[i-1]->publish_state(next_hour["temperature"].as<string>());
+                }
+text_sensor:
+  # Hours
+  - platform: template
+    id: hourly_hour_1
+    internal: true
+    on_value:
+      then:
+        - lvgl.label.update:
+            id: lbl_hourly_hour_1
+            text:
+              format: "%s"
+              args: [x.c_str()]
+  - platform: template
+    id: hourly_hour_2
+    internal: true
+    on_value:
+      then:
+        - lvgl.label.update:
+            id: lbl_hourly_hour_2
+            text:
+              format: "%s"
+              args: [x.c_str()]
+  - platform: template
+    id: hourly_hour_3
+    internal: true
+    on_value:
+      then:
+        - lvgl.label.update:
+            id: lbl_hourly_hour_3
+            text:
+              format: "%s"
+              args: [x.c_str()]
+  - platform: template
+    id: hourly_hour_4
+    internal: true
+    on_value:
+      then:
+        - lvgl.label.update:
+            id: lbl_hourly_hour_4
+            text:
+              format: "%s"
+              args: [x.c_str()]
+  - platform: template
+    id: hourly_hour_5
+    internal: true
+    on_value:
+      then:
+        - lvgl.label.update:
+            id: lbl_hourly_hour_5
+            text:
+              format: "%s"
+              args: [x.c_str()]
+  # - platform: template
+  #   id: hourly_hour_6
+  #   internal: true
+  #   on_value:
+  #     then:
+  #       - lvgl.label.update:
+  #           id: lbl_hourly_hour_6
+  #           text:
+  #             format: "%s"
+  #             args: [x.c_str()]
+  # - platform: template
+  #   id: hourly_hour_7
+  #   internal: true
+  #   on_value:
+  #     then:
+  #       - lvgl.label.update:
+  #           id: lbl_hourly_hour_7
+  #           text:
+  #             format: "%s"
+  #             args: [x.c_str()]
+  # - platform: template
+  #   id: hourly_hour_8
+  #   internal: true
+  #   on_value:
+  #     then:
+  #       - lvgl.label.update:
+  #           id: lbl_hourly_hour_8
+  #           text:
+  #             format: "%s"
+  #             args: [x.c_str()]
+
+  # Conditions
+  - platform: template
+    id: hourly_condition_1
+    internal: true
+    on_value:
+      then:
+        - lvgl.label.update:
+            id: lbl_hourly_condition_1
+            text: 
+              format: "%s"
+              args: [x.c_str()]
+  - platform: template
+    id: hourly_condition_2
+    internal: true
+    on_value:
+      then:
+        - lvgl.label.update:
+            id: lbl_hourly_condition_2
+            text: 
+              format: "%s"
+              args: [x.c_str()]
+  - platform: template
+    id: hourly_condition_3
+    internal: true
+    on_value:
+      then:
+        - lvgl.label.update:
+            id: lbl_hourly_condition_3
+            text: 
+              format: "%s"
+              args: [x.c_str()]
+  - platform: template
+    id: hourly_condition_4
+    internal: true
+    on_value:
+      then:
+        - lvgl.label.update:
+            id: lbl_hourly_condition_4
+            text: 
+              format: "%s"
+              args: [x.c_str()]
+  - platform: template
+    id: hourly_condition_5
+    internal: true
+    on_value:
+      then:
+        - lvgl.label.update:
+            id: lbl_hourly_condition_5
+            text: 
+              format: "%s"
+              args: [x.c_str()]
+  # - platform: template
+  #   id: hourly_condition_6
+  #   internal: true
+  #   on_value:
+  #     then:
+  #       - lvgl.label.update:
+  #           id: lbl_hourly_condition_6
+  #           text: 
+  #             format: "%s"
+  #             args: [x.c_str()]
+  # - platform: template
+  #   id: hourly_condition_7
+  #   internal: true
+  #   on_value:
+  #     then:
+  #       - lvgl.label.update:
+  #           id: lbl_hourly_condition_7
+  #           text: 
+  #             format: "%s"
+  #             args: [x.c_str()]
+  # - platform: template
+  #   id: hourly_condition_8
+  #   internal: true
+  #   on_value:
+  #     then:
+  #       - lvgl.label.update:
+  #           id: lbl_hourly_condition_8
+  #           text: 
+  #             format: "%s"
+  #             args: [x.c_str()]
+
+  # Temps
+  - platform: template
+    id: hourly_temp_1
+    internal: true
+    on_value:
+      then:
+        - lvgl.label.update:
+            id: lbl_hourly_temp_1
+            text:
+              format: "%s°"
+              args: [x.c_str()]
+  - platform: template
+    id: hourly_temp_2
+    internal: true
+    on_value:
+      then:
+        - lvgl.label.update:
+            id: lbl_hourly_temp_2
+            text:
+              format: "%s°"
+              args: [x.c_str()]
+  - platform: template
+    id: hourly_temp_3
+    internal: true
+    on_value:
+      then:
+        - lvgl.label.update:
+            id: lbl_hourly_temp_3
+            text:
+              format: "%s°"
+              args: [x.c_str()]
+  - platform: template
+    id: hourly_temp_4
+    internal: true
+    on_value:
+      then:
+        - lvgl.label.update:
+            id: lbl_hourly_temp_4
+            text:
+              format: "%s°"
+              args: [x.c_str()]
+  - platform: template
+    id: hourly_temp_5
+    internal: true
+    on_value:
+      then:
+        - lvgl.label.update:
+            id: lbl_hourly_temp_5
+            text:
+              format: "%s°"
+              args: [x.c_str()]
+  # - platform: template
+  #   id: hourly_temp_6
+  #   internal: true
+  #   on_value:
+  #     then:
+  #       - lvgl.label.update:
+  #           id: lbl_hourly_temp_6
+  #           text:
+  #             format: "%s°"
+  #             args: [x.c_str()]
+  # - platform: template
+  #   id: hourly_temp_7
+  #   internal: true
+  #   on_value:
+  #     then:
+  #       - lvgl.label.update:
+  #           id: lbl_hourly_temp_7
+  #           text:
+  #             format: "%s°"
+  #             args: [x.c_str()]
+  # - platform: template
+  #   id: hourly_temp_8
+  #   internal: true
+  #   on_value:
+  #     then:
+  #       - lvgl.label.update:
+  #           id: lbl_hourly_temp_8
+  #           text:
+  #             format: "%s°"
+  #             args: [x.c_str()]

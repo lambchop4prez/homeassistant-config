@@ -1,0 +1,260 @@
+script:
+  - id: daily_forecast
+    then:
+      - logger.log: "Daily Forecast"
+      - homeassistant.action:
+          action: weather.get_forecasts
+          data:
+            entity_id: weather.forecast_home
+            type: daily
+          capture_response: true
+          on_success:
+            - lambda: |-
+                JsonObjectConst current_day = response["response"]["weather.forecast_home"]["forecast"][0];
+                string current_low = current_day["templow"].as<string>();
+                string current_high = current_day["temperature"].as<string>();
+                ESP_LOGI("weather", "Temperature high/low: %s / %s", current_high.c_str(), current_low.c_str());
+                id(today_low).publish_state(current_low);
+                id(today_high).publish_state(current_high);
+                esphome::template_::TemplateTextSensor* days[5] = {
+                  id(daily_1_day),
+                  id(daily_2_day),
+                  id(daily_3_day),
+                  id(daily_4_day),
+                  id(daily_5_day)
+                };
+                esphome::template_::TemplateTextSensor* conditions[5] = {
+                  id(daily_condition_1),
+                  id(daily_condition_2),
+                  id(daily_condition_3),
+                  id(daily_condition_4),
+                  id(daily_condition_5)
+                };
+                esphome::template_::TemplateTextSensor* highs[5] = {
+                  id(daily_high_1),
+                  id(daily_high_2),
+                  id(daily_high_3),
+                  id(daily_high_4),
+                  id(daily_high_5)
+                };
+                esphome::template_::TemplateTextSensor* lows[5] = {
+                  id(daily_low_1),
+                  id(daily_low_2),
+                  id(daily_low_3),
+                  id(daily_low_4),
+                  id(daily_low_5)
+                };
+                esphome::ESPTime t = id(current_time).now();
+                for(int i = 1; i <= 5; i++)
+                {
+                  JsonObjectConst next_day = response["response"]["weather.forecast_home"]["forecast"][i];
+                  t.increment_day();
+                  days[i-1]->publish_state(t.strftime("%a"));
+                  conditions[i-1]->publish_state(condition_icons[next_day["condition"].as<string>()].c_str());
+                  highs[i-1]->publish_state(next_day["temperature"].as<string>());
+                  lows[i-1]->publish_state(next_day["templow"].as<string>());
+                }
+text_sensor:
+  - platform: template
+    id: daily_1_day
+    internal: true
+    on_value:
+      then:
+        - lvgl.label.update:
+            id: lbl_daily_1_day
+            text:
+              format: "%s"
+              args: [x.c_str()]
+  - platform: template
+    id: daily_2_day
+    internal: true
+    on_value:
+      then:
+        - lvgl.label.update:
+            id: lbl_daily_2_day
+            text:
+              format: "%s"
+              args: [x.c_str()]
+  - platform: template
+    id: daily_3_day
+    internal: true
+    on_value:
+      then:
+        - lvgl.label.update:
+            id: lbl_daily_3_day
+            text:
+              format: "%s"
+              args: [x.c_str()]
+  - platform: template
+    id: daily_4_day
+    internal: true
+    on_value:
+      then:
+        - lvgl.label.update:
+            id: lbl_daily_4_day
+            text:
+              format: "%s"
+              args: [x.c_str()]
+  - platform: template
+    id: daily_5_day
+    internal: true
+    on_value:
+      then:
+        - lvgl.label.update:
+            id: lbl_daily_5_day
+            text:
+              format: "%s"
+              args: [x.c_str()]
+  
+  - platform: template
+    id: daily_condition_1
+    internal: true
+    on_value:
+      then:
+        - lvgl.label.update:
+            id: lbl_daily_condition_1
+            text:
+              format: "%s"
+              args: [x.c_str()]
+  - platform: template
+    id: daily_condition_2
+    internal: true
+    on_value:
+      then:
+        - lvgl.label.update:
+            id: lbl_daily_condition_2
+            text:
+              format: "%s"
+              args: [x.c_str()]
+  - platform: template
+    id: daily_condition_3
+    internal: true
+    on_value:
+      then:
+        - lvgl.label.update:
+            id: lbl_daily_condition_3
+            text:
+              format: "%s"
+              args: [x.c_str()]
+  - platform: template
+    id: daily_condition_4
+    internal: true
+    on_value:
+      then:
+        - lvgl.label.update:
+            id: lbl_daily_condition_4
+            text:
+              format: "%s"
+              args: [x.c_str()]
+  - platform: template
+    id: daily_condition_5
+    internal: true
+    on_value:
+      then:
+        - lvgl.label.update:
+            id: lbl_daily_condition_5
+            text:
+              format: "%s"
+              args: [x.c_str()]
+  - platform: template
+    id: daily_high_1
+    internal: true
+    on_value:
+      then:
+        - lvgl.label.update:
+            id: lbl_daily_high_1
+            text:
+              format: "%s°"
+              args: [x.c_str()]
+  - platform: template
+    id: daily_high_2
+    internal: true
+    on_value:
+      then:
+        - lvgl.label.update:
+            id: lbl_daily_high_2
+            text:
+              format: "%s°"
+              args: [x.c_str()]
+  - platform: template
+    id: daily_high_3
+    internal: true
+    on_value:
+      then:
+        - lvgl.label.update:
+            id: lbl_daily_high_3
+            text:
+              format: "%s°"
+              args: [x.c_str()]
+  - platform: template
+    id: daily_high_4
+    internal: true
+    on_value:
+      then:
+        - lvgl.label.update:
+            id: lbl_daily_high_4
+            text:
+              format: "%s°"
+              args: [x.c_str()]
+  - platform: template
+    id: daily_high_5
+    internal: true
+    on_value:
+      then:
+        - lvgl.label.update:
+            id: lbl_daily_high_5
+            text:
+              format: "%s°"
+              args: [x.c_str()]
+
+  - platform: template
+    id: daily_low_1
+    internal: true
+    on_value:
+      then:
+        - lvgl.label.update:
+            id: lbl_daily_low_1
+            text:
+              format: "%s°"
+              args: [x.c_str()]
+  - platform: template
+    id: daily_low_2
+    internal: true
+    on_value:
+      then:
+        - lvgl.label.update:
+            id: lbl_daily_low_2
+            text:
+              format: "%s°"
+              args: [x.c_str()]
+  - platform: template
+    id: daily_low_3
+    internal: true
+    on_value:
+      then:
+        - lvgl.label.update:
+            id: lbl_daily_low_3
+            text:
+              format: "%s°"
+              args: [x.c_str()]
+  - platform: template
+    id: daily_low_4
+    internal: true
+    on_value:
+      then:
+        - lvgl.label.update:
+            id: lbl_daily_low_4
+            text:
+              format: "%s°"
+              args: [x.c_str()]
+  - platform: template
+    id: daily_low_5
+    internal: true
+    on_value:
+      then:
+        - lvgl.label.update:
+            id: lbl_daily_low_5
+            text:
+              format: "%s°"
+              args: [x.c_str()]
+  

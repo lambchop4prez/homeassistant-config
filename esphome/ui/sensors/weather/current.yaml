@@ -1,0 +1,68 @@
+text_sensor:
+  - platform: template
+    id: today_low
+    internal: true
+    on_value:
+      then:
+        - lvgl.label.update:
+            id: lbl_weather_forecast_templow
+            text: 
+              format: "%s°"
+              args: [x.c_str()]
+  - platform: template
+    id: today_high
+    internal: true
+    on_value:
+      then:
+        - lvgl.label.update:
+            id: lbl_weather_forecast_temphigh
+            text: 
+              format: "%s°"
+              args: [x.c_str()]
+  - platform: homeassistant
+    entity_id: weather.forecast_home
+    id: outdoor_temperature
+    attribute: temperature
+    internal: true
+    on_value:
+      then:
+        - lvgl.label.update:
+            id: lbl_weather_forecast_temp
+            text:
+              format: "%s°"
+              args: [x.c_str()]
+
+  # - platform: homeassistant
+  #   entity_id: weather.forecast_home
+  #   attribute: humidity
+  #   id: outdoor_humidity
+  #   internal: true
+  #   on_value:
+  #     then:
+  #       - lvgl.label.update:
+  #           id: lbl_weather_forecast_humidity
+  #           text:
+  #             format: "%s%%"
+  #             args: [x.c_str()]
+  # - platform: homeassistant
+  #   entity_id: weather.forecast_home
+  #   attribute: pressure
+  #   id: barometric_pressure
+  #   internal: true
+  #   on_value:
+  #     then:
+  #       - lvgl.label.update:
+  #           id: lbl_weather_forecast_pressure
+  #           text:
+  #             format: "%s"
+  #             args: [x.c_str()]
+  - platform: homeassistant
+    entity_id: weather.forecast_home
+    attribute: wind_bearing
+    id: wind_bearing
+    internal: true
+    on_value:
+      then:
+        - lvgl.indicator.update:
+            id: line_wind_bearing
+            value: !lambda return atoi(x.c_str());

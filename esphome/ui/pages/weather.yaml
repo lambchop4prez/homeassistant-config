@@ -1,0 +1,38 @@
+id: weather_full
+widgets:
+  - obj:
+      align: CENTER
+      width: $display_width
+      height: $display_height
+      bg_opa: TRANSP
+      border_opa: TRANSP
+      pad_top: 36
+      layout:
+        type: grid
+        grid_rows: [FR(1), FR(1)]
+        grid_columns: [FR(2), FR(1), FR(1), FR(2)]
+        pad_column: 0
+        pad_row: 0
+      widgets:
+        - obj: # Right column
+            bg_opa: TRANSP
+            border_opa: TRANSP
+            grid_cell_row_pos: 0
+            grid_cell_column_pos: 0
+            grid_cell_x_align: STRETCH
+            grid_cell_y_align: STRETCH
+            outline_width: 1 
+            pad_all: 0
+            layout:
+              type: flex
+              flex_flow: COLUMN
+              flex_align_track: CENTER
+            widgets:
+              - image:
+                  src: bidoof
+        
+        - !include { file: widgets/wind-bearing.yaml, vars: { row_pos: 0, row_span: 1, column_pos: 1, column_span: 2}}
+        - !include { file: widgets/current-conditions.yaml, vars: {row_pos: 0, row_span: 1, column_pos: 3, column_span: 1}}
+        - !include { file: widgets/weather-5-day.yaml, vars: {row_pos: 1, row_span: 1, column_pos: 0, column_span: 2}}
+        # - !include { file: widgets/weather-hourly.yaml, vars: {row_pos: 1, row_span: 1, column_pos: 2, column_span: 2}}
+        

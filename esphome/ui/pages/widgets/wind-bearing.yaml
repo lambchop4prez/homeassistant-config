@@ -1,0 +1,64 @@
+obj: # Wind bearing
+  bg_opa: TRANSP
+  border_opa: TRANSP
+  grid_cell_row_pos: $row_pos
+  grid_cell_row_span: $row_span
+  grid_cell_column_pos: $column_pos
+  grid_cell_column_span: $column_span
+  # outline_width: 1
+  pad_all: 0
+  grid_cell_x_align: STRETCH
+  grid_cell_y_align: STRETCH
+  layout:
+    type: flex
+    flex_flow: COLUMN
+    flex_align_track: CENTER
+  widgets:
+    - obj: # Compass container
+        bg_opa: TRANSP
+        border_opa: TRANSP
+        height: SIZE_CONTENT
+        width: 200
+        # align: CENTER
+        pad_all: 0
+        border_width: 0
+        # outline_width: 1
+        widgets:
+          - meter: # Compass
+              height: 200
+              width: 200
+              align: CENTER
+              bg_opa: TRANSP
+              border_opa: TRANSP
+              border_width: 0
+              scales:
+                - range_from: 0
+                  range_to: 360
+                  angle_range: 360
+                  rotation: 270
+                  ticks:
+                    width: 1
+                    count: 13
+                    length: 5
+                    # major:
+                    #   length: 10
+                    #   stride: 45
+                    #   label_gap: 12
+                  indicators:
+                    - arc:
+                        # color: screen_black
+                        r_mod: -16
+                        width: 16
+                        start_value: 1
+                        end_value: 360
+                    - image:
+                        id: direction_pointer
+                        src: indicator
+                        pivot_x: 8
+                        pivot_y: 105
+                        value: 0
+                    - line:
+                        id: line_wind_bearing
+                        width: 3
+                        r_mod: -5
+                        value: 233

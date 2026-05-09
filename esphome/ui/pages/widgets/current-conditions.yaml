@@ -1,0 +1,274 @@
+container: # Left column
+  bg_opa: TRANSP
+  border_opa: TRANSP
+  grid_cell_row_pos: $row_pos
+  grid_cell_row_span: $row_span
+  grid_cell_column_pos: $column_pos
+  grid_cell_column_span: $column_span
+  grid_cell_x_align: STRETCH
+  grid_cell_y_align: STRETCH
+  # outline_width: 1
+  layout:
+    # pad_column: 5
+    # pad_row: 5
+    type: GRID
+    #             0   ,   1   ,   2   ,   3   
+    grid_rows: [FR(20), FR(20), FR(30), FR(30), FR(20)]
+    #                0   ,    1  ,   2   ,   3   ,   4   ,    5  ,   6   , 7     ,   8   ,   9
+    grid_columns: [FR(10), FR(10), FR(10), FR(10), FR(10), FR(10), FR(10), FR(10), FR(10), FR(10)]
+    
+  widgets:
+    # Row 0/1
+    - label:
+        text: "\U000F0595"
+        id: lbl_weather_forecast_condition_icon
+        text_font: font_current_conditions
+        text_align: CENTER
+        grid_cell_row_pos: 0
+        grid_cell_row_span: 2
+        grid_cell_column_pos: 0
+        grid_cell_column_span: 4
+        grid_cell_x_align: CENTER
+        grid_cell_y_align: START
+
+    - label:
+        text: "--°"
+        text_font: font_large
+        id: lbl_weather_forecast_temp
+        text_align: RIGHT
+        grid_cell_row_pos: 0
+        grid_cell_row_span: 1
+        grid_cell_column_pos: 5
+        grid_cell_column_span: 5
+        grid_cell_x_align: STRETCH
+        grid_cell_y_align: START
+
+    # Row 2
+    - label:
+        text: "\U000F10C2"
+        text_font: font_icons
+        grid_cell_row_pos: 1
+        grid_cell_column_pos: 4
+        grid_cell_x_align: END
+        grid_cell_y_align: END
+        
+    - label:
+        text: "--°"
+        id: lbl_weather_forecast_temphigh
+        text_align: RIGHT
+        grid_cell_row_pos: 1
+        grid_cell_column_pos: 5
+        grid_cell_column_span: 2
+        grid_cell_x_align: STRETCH
+        grid_cell_y_align: END
+
+    - label:
+        text: "\U000F10C3"
+        text_font: font_icons
+        grid_cell_row_pos: 1
+        grid_cell_column_pos: 7
+        grid_cell_x_align: END
+        grid_cell_y_align: END
+
+    - label:
+        text: "--°"
+        id: lbl_weather_forecast_templow
+        text_align: RIGHT
+        grid_cell_row_pos: 1
+        grid_cell_column_pos: 8
+        grid_cell_column_span: 2
+        grid_cell_x_align: STRETCH
+        grid_cell_y_align: END
+    
+    # Hourly
+    - label:
+        id: lbl_hourly_hour_1
+        text_font: font_icons
+        text: "\U000F1455"
+        text_align: CENTER
+        grid_cell_row_pos: 2
+        grid_cell_column_pos: 0
+        grid_cell_column_span: 2
+        grid_cell_x_align: STRETCH
+        grid_cell_y_align: END
+    - label:
+        id: lbl_hourly_hour_2
+        text_font: font_icons
+        text: "\U000F1455"
+        text_align: CENTER
+        grid_cell_row_pos: 2
+        grid_cell_column_pos: 2
+        grid_cell_column_span: 2
+        grid_cell_x_align: STRETCH
+        grid_cell_y_align: END
+    - label:
+        id: lbl_hourly_hour_3
+        text_font: font_icons
+        text: "\U000F1455"
+        text_align: CENTER
+        grid_cell_row_pos: 2
+        grid_cell_column_pos: 4
+        grid_cell_column_span: 2
+        grid_cell_x_align: STRETCH
+        grid_cell_y_align: END
+    - label:
+        id: lbl_hourly_hour_4
+        text_font: font_icons
+        text: "\U000F1455"
+        text_align: CENTER
+        grid_cell_row_pos: 2
+        grid_cell_column_pos: 6
+        grid_cell_column_span: 2
+        grid_cell_x_align: STRETCH
+        grid_cell_y_align: END
+    - label:
+        id: lbl_hourly_hour_5
+        text_font: font_icons
+        text: "\U000F1455"
+        text_align: CENTER
+        grid_cell_row_pos: 2
+        grid_cell_column_pos: 8
+        grid_cell_column_span: 2
+        grid_cell_x_align: STRETCH
+        grid_cell_y_align: END
+    
+    # Conditions
+    - label:
+        id: lbl_hourly_condition_1
+        text_font: font_current_conditions_tiny
+        text: "\U000F14E4"
+        text_align: CENTER
+        grid_cell_row_pos: 3
+        grid_cell_column_pos: 0
+        grid_cell_column_span: 2
+        grid_cell_x_align: STRETCH
+        grid_cell_y_align: CENTER
+    - label:
+        id: lbl_hourly_condition_2
+        text_font: font_current_conditions_tiny
+        text: "\U000F14E4"
+        text_align: CENTER
+        grid_cell_row_pos: 3
+        grid_cell_column_pos: 2
+        grid_cell_column_span: 2
+        grid_cell_x_align: STRETCH
+        grid_cell_y_align: CENTER
+    - label:
+        id: lbl_hourly_condition_3
+        text_font: font_current_conditions_tiny
+        text: "\U000F14E4"
+        text_align: CENTER
+        grid_cell_row_pos: 3
+        grid_cell_column_pos: 4
+        grid_cell_column_span: 2
+        grid_cell_x_align: STRETCH
+        grid_cell_y_align: CENTER
+    - label:
+        id: lbl_hourly_condition_4
+        text_font: font_current_conditions_tiny
+        text: "\U000F14E4"
+        text_align: CENTER
+        grid_cell_row_pos: 3
+        grid_cell_column_pos: 6
+        grid_cell_column_span: 2
+        grid_cell_x_align: STRETCH
+        grid_cell_y_align: CENTER
+    - label:
+        id: lbl_hourly_condition_5
+        text_font: font_current_conditions_tiny
+        text: "\U000F14E4"
+        text_align: CENTER
+        grid_cell_row_pos: 3
+        grid_cell_column_pos: 8
+        grid_cell_column_span: 2
+        grid_cell_x_align: STRETCH
+        grid_cell_y_align: CENTER
+
+    - label:
+        id: lbl_hourly_temp_1
+        text: "--°"
+        text_align: CENTER
+        grid_cell_row_pos: 4
+        grid_cell_column_pos: 0
+        grid_cell_column_span: 2
+        grid_cell_x_align: STRETCH
+        grid_cell_y_align: END
+    - label:
+        id: lbl_hourly_temp_2
+        text: "--°"
+        text_align: CENTER
+        grid_cell_row_pos: 4
+        grid_cell_column_pos: 2
+        grid_cell_column_span: 2
+        grid_cell_x_align: STRETCH
+        grid_cell_y_align: END
+    - label:
+        id: lbl_hourly_temp_3
+        text: "--°"
+        text_align: CENTER
+        grid_cell_row_pos: 4
+        grid_cell_column_pos: 4
+        grid_cell_column_span: 2
+        grid_cell_x_align: STRETCH
+        grid_cell_y_align: END
+    - label:
+        id: lbl_hourly_temp_4
+        text: "--°"
+        text_align: CENTER
+        grid_cell_row_pos: 4
+        grid_cell_column_pos: 6
+        grid_cell_column_span: 2
+        grid_cell_x_align: STRETCH
+        grid_cell_y_align: END
+    - label:
+        id: lbl_hourly_temp_5
+        text: "--°"
+        text_align: CENTER
+        grid_cell_row_pos: 4
+        grid_cell_column_pos: 8
+        grid_cell_column_span: 2
+        grid_cell_x_align: STRETCH
+        grid_cell_y_align: END
+
+    # # Row 3
+
+    # - label:
+    #     text: "\U000F058E"
+    #     text_font: font_icons
+    #     text_align: RIGHT
+    #     grid_cell_row_pos: 3
+    #     grid_cell_column_pos: 0
+    # - label:
+    #     text: "--%"
+    #     id: lbl_weather_forecast_humidity
+    #     text_align: RIGHT
+    #     grid_cell_row_pos: 3
+    #     grid_cell_column_pos: 1
+    #     grid_cell_column_span: 2
+
+    # - label:
+    #     text: "\U000F029A"
+    #     text_font: font_icons
+    #     text_align: RIGHT
+    #     grid_cell_row_pos: 3
+    #     grid_cell_column_pos: 3
+    # - label:
+    #     text: "--"
+    #     id: lbl_weather_forecast_pressure
+    #     text_align: RIGHT
+    #     grid_cell_row_pos: 3
+    #     grid_cell_column_pos: 4
+    #     grid_cell_column_span: 2
+
+    # # Row 4
+    # - label:
+    #     text: "Pressure:"
+    #     grid_cell_row_pos: 4
+    #     grid_cell_column_pos: 0
+    #     grid_cell_column_span: 2
+    
+    # - label:
+    #     text: "15.0 PSI"
+    #     grid_cell_row_pos: 4
+    #     grid_cell_column_pos: 3
+    #     grid_cell_column_span: 2
