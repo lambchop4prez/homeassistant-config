@@ -1,0 +1,43 @@
+---
+# Pulled from https://devices.esphome.io/devices/treatlife-ds02f/
+# BK72XX-Based Board
+bk72xx:
+  board: wb3s
+
+packages:
+  base: !include ../common/base.yaml
+
+uart:
+  rx_pin: RX1
+  tx_pin: TX1
+  baud_rate: 115200
+
+tuya:
+  id: tuyamcu
+  on_datapoint_update:
+    - sensor_datapoint: 101
+      datapoint_type: int
+      then:
+        - lambda: |-
+            id(inverted_light_mode).publish_state(x == 1);
+
+fan:
+  - platform: "tuya"
+    name: ${friendly_name} Speed
+    switch_datapoint: 1
+    speed_datapoint: 3
+    speed_count: 4
+
+# The "Light Mode" controls the white status led ring on the button.
+# Normal Mode (0): Led ON when fan power OFF, Led OFF when fan power ON
+# Inverted Mode (1): Led OFF when fan power OFF, Led ON when fan power ON
+switch:
+  - platform: template
+    id: inverted_light_mode
+    name: ${friendly_name} Light Mode
+    turn_on_action:
+      - lambda: |-
+          id(tuyamcu).set_integer_datapoint_value(101,1);
+    turn_off_action:
+      - lambda: |-
+          id(tuyamcu).set_integer_datapoint_value(101,0);

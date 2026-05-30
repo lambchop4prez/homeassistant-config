@@ -1,9 +1,9 @@
 ---
 substitutions:
-  name: basement-lights
-  friendly_name: "Basement Light Switch"
-  api_encryption_key: !secret basement_lights_encryption_key
-  ota_password: !secret basement_lights_ota_password
+  name: backyard-lights
+  friendly_name: "Backyard Light Switch"
+  api_encryption_key: !secret backyard_lights_encyrption_key
+  ota_password: !secret backyard_lights_ota_password
   device_comment: "Martin Jerry SS01 Light Switch"
   # Higher value gives lower watt readout
   current_res: "0.00106"
@@ -14,15 +14,12 @@ substitutions:
 packages:
   device: !include ./devices/rp-s01.yaml
   time: !include ./components/ntp.yaml
-  bluetooth_proxy: !include ./components/bluetooth-proxy.yaml
-
 
 light:
   - platform: binary
     id: light_1
-    name: "Basement Lights"
+    name: "Backyard Lights"
     output: relay_1
-    icon: mdi:light-flood-down
 
 binary_sensor:
   - id: !extend button_1

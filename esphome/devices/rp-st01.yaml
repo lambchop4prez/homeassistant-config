@@ -1,0 +1,14 @@
+---
+substitutions:
+  output_pin:
+    number: GPIO12
+    inverted: false
+
+packages:
+  base: !include ../common/base.yaml
+
+switch:
+  - platform: gpio
+    name: "${friendly_name} Relay"
+    pin: $output_pin
+    restore_mode: RESTORE_DEFAULT_OFF

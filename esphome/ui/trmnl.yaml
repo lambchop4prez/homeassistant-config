@@ -67,6 +67,7 @@ packages:
         - "\U000F059E" # windy-variant
         - "\U000F0F38" # exceptional
         - "\U000F14E4" # unknown
+        - "\U000F0F31" # partlycloudy-night
   font_current_conditions_tiny: !include
     file: ../components/icons.yaml
     vars:
@@ -89,6 +90,7 @@ packages:
         - "\U000F059E" # windy-variant
         - "\U000F0F38" # exceptional
         - "\U000F14E4" # unknown
+        - "\U000F0F31" # partlycloudy-night
   font_current_conditions_small: !include
     file: ../components/icons.yaml
     vars:
@@ -111,6 +113,7 @@ packages:
         - "\U000F059E" # windy-variant
         - "\U000F0F38" # exceptional
         - "\U000F14E4" # unknown
+        - "\U000F0F31" # partlycloudy-night
   font_icons: !include
     file: ../components/icons.yaml
     vars:

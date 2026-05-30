@@ -31,7 +31,7 @@ widgets:
               - image:
                   src: bidoof
         
-        - !include { file: widgets/wind-bearing.yaml, vars: { row_pos: 0, row_span: 1, column_pos: 1, column_span: 2}}
+        - !include { file: widgets/wind-bearing.yaml, vars: { row_pos: 1, row_span: 1, column_pos: 3, column_span: 1}}
         - !include { file: widgets/current-conditions.yaml, vars: {row_pos: 0, row_span: 1, column_pos: 3, column_span: 1}}
         - !include { file: widgets/weather-5-day.yaml, vars: {row_pos: 1, row_span: 1, column_pos: 0, column_span: 2}}
         # - !include { file: widgets/weather-hourly.yaml, vars: {row_pos: 1, row_span: 1, column_pos: 2, column_span: 2}}

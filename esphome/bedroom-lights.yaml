@@ -1,0 +1,10 @@
+substitutions:
+  name: bedroom-lights
+  friendly_name: "Bedroom Light Switch"
+  device_comment: "TreatLife DS02F Ceiling Fan Controller"
+  api_encryption_key: !secret bedroom_lights_encryption_key
+  ota_password: !secret bedroom_lights_ota_password
+
+packages:
+  device: !include ./devices/ds02f.yaml
+  time: !include ./components/ntp.yaml
