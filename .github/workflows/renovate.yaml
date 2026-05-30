@@ -9,15 +9,15 @@ on:
         default: false
         required: false
         type: boolean
-  schedule:
-    - cron: '31 3 * * *'
-  push:
-    branches:
-      - main
-      - develop
-    paths:
-      - '.github/renovate.json'
-      - '.github/renovate/**.json'
+  # schedule:
+  #   - cron: '53 3 * * *'
+  # push:
+  #   branches:
+  #     - main
+  #     - develop
+  #   paths:
+  #     - '.github/renovate.json'
+  #     - '.github/renovate/**.json'
 
 concurrency:
     group: ${{ github.workflow }}-${{ github.ref }}
@@ -43,3 +43,5 @@ jobs:
 
       - name: Renovate
         uses: renovatebot/github-action@8ac70de2fe55752c573155866e30735411e3b61c # 41.0.22
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
