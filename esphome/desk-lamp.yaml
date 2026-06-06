@@ -1,12 +1,14 @@
 substitutions:
   name: desklamp
   friendly_name: "Desk Lamp"
+  time_id: current_time
   api_encryption_key: !secret desk_lamp_encryption_key
   ota_password: !secret desk_lamp_ota_password
 
 packages:
   device_base: !include ./devices/sonoff-minir4-extreme.yaml
   bluetooth_proxy: !include ./components/bluetooth-proxy.yaml
+  time: !include ./components/ntp.yaml
 
 light:
   - platform: binary
@@ -25,18 +27,26 @@ binary_sensor:
     on_press:
       - light.toggle:
           id: light_1
-time:
-  - platform: sntp
-    id: sntp_time
-    timezone: America/Detroit
+
+datetime:
+  - platform: template
+    id: turn_on_time
+    time_id: $time_id
+    type: time
+    initial_value: "10:00:00"
+    optimistic: true
+    restore_value: true
     on_time:
-      - seconds: 0
-        minutes: 30
-        hours: 8
-        then:
-          - light.turn_on: light_1
-      - seconds: 0
-        minutes: 00
-        hours: 21
-        then:
-          - light.turn_off: light_1
+      then:
+        - light.turn_on: light_1
+
+  - platform: template
+    id: turn_off_time
+    time_id: $time_id
+    type: time
+    initial_value: "21:00:00"
+    optimistic: true
+    restore_value: true
+    on_time:
+      then:
+        - light.turn_off: light_1
