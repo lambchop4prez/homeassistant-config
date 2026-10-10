@@ -1,0 +1,8 @@
+default_provider = "keychain"
+
+[providers.keychain]
+type = "keychain"
+service = "keychain"
+
+[secrets]
+BWS_ACCESS_TOKEN= { provider = "keychain", value = "BWS_ACCESS_TOKEN", description = "Access token for bws cli" }
