@@ -1,0 +1,10 @@
+substitutions:
+  name: desk-sensor
+  friendly_name: "Desk Sensor"
+  time_id: current_time
+  api_encryption_key: !secret desk_sensor_encryption_key
+  ota_password: !secret desk_sensor_ota_password
+
+packages:
+  device_base: !include ./devices/wemos-d1-mini32.yaml
+  presence_sensor: !include ./components/ld2420.yaml
