@@ -14,3 +14,13 @@ homeassistant:
 automation: !include automations.yaml
 script: !include scripts.yaml
 scene: !include scenes.yaml
+
+# YAML-mode dashboards (default overview stays UI-managed).
+lovelace:
+  dashboards:
+    echo-show:
+      mode: yaml
+      title: Echo Show
+      icon: mdi:tablet-cellphone
+      show_in_sidebar: true
+      filename: dashboards/echo-show.yaml

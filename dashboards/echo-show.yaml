@@ -1,0 +1,98 @@
+---
+# Dashboard for the jailbroken Echo Show 5 Gen 2 (960x480, kiosk browser).
+# Reached at: http://homeassistant.local:8123/lovelace/echo-show
+#
+# Wired up in configuration.yaml via:
+#   lovelace:
+#     titles:
+#       echo-show: !include dashboards/echo-show.yaml
+# (Keeps your default overview UI-managed; this dashboard is YAML-mode.)
+#
+# Clock: updates every minute because the template references sensor.time
+# (from time_date, already pulled in by default_config). Displayed 12-hour.
+#
+# WEATHER ENTITY IDS — the ws2900_v2_02_06_* names are placeholders. The Ecowitt
+# integration suffixes entities with your station model (e.g.
+# sensor.ws2900_v2_02_06_gw2000a_pro_1_temperature_2m). Check Developer Tools >
+# States and swap in the real ones; guarded fields show "-" until they exist.
+title: Echo Show
+views:
+  - title: Home
+    path: home
+    type: sections
+    max_columns: 2
+    cards:
+      # ---------------- Clock ----------------
+      - type: section
+        title: ""
+        cards:
+          - type: markdown
+            content: >-
+              {% set t = states('sensor.time') %}
+              {% if ':' in t %}
+              {% set h = t.split(':')[0] | int %}
+              {% set ampm = 'AM' if h < 12 else 'PM' %}
+              {% set h12 = h % 12 if h % 12 != 0 else 12 %}
+              <div style="text-align:center;">
+                <div style="font-size:96px; font-weight:200; line-height:1.05;
+                            font-variant-numeric:tabular-nums;">
+                  {{ h12 }}:{{ t.split(':')[1] }}<span style="font-size:36px;
+                          vertical-align:super; opacity:.6;">{{ ampm }}</span>
+                </div>
+                <div style="font-size:26px; opacity:.7; letter-spacing:2px;
+                            margin-top:8px;">
+                  {{ now().strftime('%A, %B %-d') }}
+                </div>
+              </div>
+              {% endif %}
+
+      # ---------------- Weather: OpenWeatherMap + Ecowitt ----------------
+      - type: section
+        title: ""
+        cards:
+          - type: markdown
+            content: >-
+              {% macro val(v, unit) -%}
+                {% if v not in ['unknown', 'unavailable', 'None', ''] %}{{ v }}<span
+                  style="font-size:.5em; opacity:.7;">{{ unit }}</span>
+                {% else %}–{% endif %}
+              {%- endmacro %}
+              <div style="text-align:center;">
+                <div style="font-size:14px; opacity:.55; letter-spacing:3px;
+                            text-transform:uppercase;">Weather</div>
+                <table style="width:100%; border-collapse:collapse;">
+                  <tr>
+                    <td style="width:50%; vertical-align:top;">
+                      <div style="font-size:54px; font-weight:300; line-height:1.1;">
+                        {{ val(states('sensor.openweathermap_feels_like_temperature'), '°F') }}
+                      </div>
+                      <div style="font-size:20px; opacity:.85;">
+                        {{ states('sensor.openweathermap_condition') }}
+                      </div>
+                      <div style="font-size:14px; opacity:.55; margin-top:2px;">
+                        wind {{ val(states('sensor.openweathermap_wind_speed'), ' mph') }}
+                      </div>
+                      <div style="font-size:12px; opacity:.4;
+                                  text-transform:uppercase; margin-top:4px;">
+                        OpenWeatherMap
+                      </div>
+                    </td>
+                    <td style="width:50%; vertical-align:top;
+                              border-left:1px solid rgba(128,128,128,.3);">
+                      <div style="font-size:54px; font-weight:300; line-height:1.1;">
+                        {{ val(states('sensor.ws2900_v2_02_06_temperature'), '°F') }}
+                      </div>
+                      <div style="font-size:20px; opacity:.85;">
+                        {{ val(states('sensor.ws2900_v2_02_06_humidity'), '% RH') }}
+                      </div>
+                      <div style="font-size:14px; opacity:.55; margin-top:2px;">
+                        {{ val(states('sensor.ws2900_v2_02_06_barometric_pressure'), ' inHg') }}
+                      </div>
+                      <div style="font-size:12px; opacity:.4;
+                                  text-transform:uppercase; margin-top:4px;">
+                        Ecowitt Station
+                      </div>
+                    </td>
+                  </tr>
+                </table>
+              </div>
