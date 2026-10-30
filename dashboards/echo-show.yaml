@@ -10,11 +10,6 @@
 #
 # Clock: updates every minute because the template references sensor.time
 # (from time_date, already pulled in by default_config). Displayed 12-hour.
-#
-# WEATHER ENTITY IDS — the ws2900_v2_02_06_* names are placeholders. The Ecowitt
-# integration suffixes entities with your station model (e.g.
-# sensor.ws2900_v2_02_06_gw2000a_pro_1_temperature_2m). Check Developer Tools >
-# States and swap in the real ones; guarded fields show "-" until they exist.
 title: Echo Show
 views:
   - title: Home

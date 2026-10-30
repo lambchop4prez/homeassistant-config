@@ -1,0 +1,9 @@
+substitutions:
+  name: "livingroom-wall-outlet"
+  friendly_name: "Living Room Wall Outlet"
+  api_encryption_key: !secret living_room_outlet_encryption_key
+
+
+packages:
+  base: !include ./common/base.yaml
+  device: !include ./devices/elegrp-rrr00.yaml

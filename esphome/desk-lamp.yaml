@@ -31,6 +31,7 @@ binary_sensor:
 datetime:
   - platform: template
     id: turn_on_time
+    name: Turn On At
     time_id: $time_id
     type: time
     initial_value: "10:00:00"
@@ -42,6 +43,7 @@ datetime:
 
   - platform: template
     id: turn_off_time
+    name: Turn Off At
     time_id: $time_id
     type: time
     initial_value: "21:00:00"
