@@ -1,9 +1,18 @@
 substitutions:
   name: "livingroom-wall-outlet"
-  friendly_name: "Living Room Wall Outlet"
+  friendly_name: "Wall Outlet"
   api_encryption_key: !secret living_room_outlet_encryption_key
 
 
 packages:
   base: !include ./common/base.yaml
   device: !include ./devices/elegrp-rrr00.yaml
+  time: !include ./components/ntp.yaml
+  top_timer: !include 
+    file: ./components/on-off-timer.yaml
+    vars:
+      name: "${friendly_name} Top"
+      on_at: "17:30:00"
+      off_at: "01:00:00"
+      target_id: upperRelay
+      time_id: current_time
