@@ -1,0 +1,39 @@
+---
+# PCM5102A I2S DAC output pipeline.
+# Requires substitutions: i2s_lrclk, i2s_bclk, i2s_dout, media_sample_rate.
+# The DAC is passive (no configuration pins) — solder the H1L/H2L/H3L/H4L
+# pads on its backside for 3.3V line-level I2S, or there will be no sound.
+i2s_audio:
+  - id: i2s_audio_bus
+    i2s_lrclk_pin: ${i2s_lrclk}
+    i2s_bclk_pin: ${i2s_bclk}
+
+speaker:
+  # Raw output stage driving the DAC over I2S.
+  - platform: i2s_audio
+    id: box_speaker
+    i2s_audio_id: i2s_audio_bus
+    i2s_dout_pin: ${i2s_dout}
+    dac_type: external
+    channel: stereo
+
+  # Mixes the media and announcement streams into the DAC output.
+  - platform: mixer
+    id: mixing_speaker
+    output_speaker: box_speaker
+    num_channels: 2
+    source_speakers:
+      - id: announcement_mixing_input
+      - id: media_mixing_input
+
+  - platform: resampler
+    id: announcement_resampling_speaker
+    output_speaker: announcement_mixing_input
+    sample_rate: ${media_sample_rate}
+    bits_per_sample: 16
+
+  - platform: resampler
+    id: media_resampling_speaker
+    output_speaker: media_mixing_input
+    sample_rate: ${media_sample_rate}
+    bits_per_sample: 16

@@ -1,0 +1,22 @@
+---
+# Sendspin multi-room audio player on a Seeed XIAO ESP32-S3 with a
+# PCM5102A DAC. Pair with a Sendspin server (e.g. Music Assistant).
+substitutions:
+  name: sendspin-player
+  friendly_name: Sendspin Player
+  device_comment: "XIAO ESP32-S3 Sendspin Player"
+  api_encryption_key: !secret sendspin_player_encryption_key
+  # ota_password: !secret sendspin_player_ota_password
+  # PCM5102A wiring (XIAO pads D3/D4/D5)
+  i2s_lrclk: GPIO4
+  i2s_bclk: GPIO5
+  i2s_dout: GPIO6
+  media_sample_rate: "48000"
+
+esphome:
+  min_version: 2026.10.0
+
+packages:
+  device: !include ./devices/xiao-esp32-s3.yaml
+  dac: !include ./components/pcm5102a.yaml
+  sendspin: !include ./components/sendspin-player.yaml

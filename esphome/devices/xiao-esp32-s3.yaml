@@ -1,0 +1,24 @@
+---
+# Seeed Studio XIAO ESP32-S3.
+# Unlike the -plus variant (arduino), this uses the esp-idf framework, which is
+# required by the sendspin and speaker audio components.
+packages:
+  base: !include ../common/base.yaml
+
+esp32:
+  board: seeed_xiao_esp32s3
+  framework:
+    type: esp-idf
+
+# The XIAO S3 carries 8MB of octal PSRAM (qio_opi), needed for audio buffering.
+psram:
+  mode: octal
+  speed: 80MHz
+
+output:
+  - platform: gpio
+    # Orange user LED next to the USB-C connector (active-low).
+    id: user_led
+    pin:
+      number: GPIO21
+      inverted: true
