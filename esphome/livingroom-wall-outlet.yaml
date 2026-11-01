@@ -8,11 +8,11 @@ packages:
   base: !include ./common/base.yaml
   device: !include ./devices/elegrp-rrr00.yaml
   time: !include ./components/ntp.yaml
-  top_timer: !include 
+  lower_timer: !include
     file: ./components/on-off-timer.yaml
     vars:
-      name: "${friendly_name} Top"
+      name: "${friendly_name} Bottom"
       on_at: "17:30:00"
       off_at: "01:00:00"
-      target_id: upperRelay
+      target_id: lowerRelay
       time_id: current_time
