@@ -1,0 +1,29 @@
+defaults:
+  name: "Switch"
+  on_at: "10:00:00"
+  off_at: "22:00:00"
+  
+datetime:
+  - platform: template
+    id: turn_on_time
+    name: "${name} On At"
+    time_id: $time_id
+    type: time
+    initial_value: $on_at
+    optimistic: true
+    restore_value: true
+    on_time:
+      then:
+        - light.turn_on: ${target_id}
+
+  - platform: template
+    id: turn_off_time
+    name: "${name} Off At"
+    time_id: $time_id
+    type: time
+    initial_value: $off_at
+    optimistic: true
+    restore_value: true
+    on_time:
+      then:
+        - light.turn_off: ${target_id}

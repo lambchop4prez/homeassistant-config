@@ -63,7 +63,7 @@ binary_sensor:
       mode: INPUT_PULLUP
       inverted: True
     on_press:
-      - switch.toggle: upperRelay
+      - switch.toggle: upper
 
   - platform: gpio
     name: "Lower Outlet button"
@@ -73,39 +73,44 @@ binary_sensor:
       mode: INPUT_PULLUP
       inverted: True
     on_press:
-      - switch.toggle: lowerRelay
+      - switch.toggle: lower
 
-switch:
+output:
   - platform: gpio
     # Upper outlet active-high to energize on P9
-    name: "Upper Outlet"
     pin: P9 # Incorrectly labeled P6 on PCB
     id: upperRelay
-    restore_mode: ALWAYS_ON
-    on_turn_on:
-      - switch.turn_on: upperLED
-    on_turn_off:
-      - switch.turn_off: upperLED
 
   - platform: gpio
     # Lower outlet active-high to energize on P7
-    name: "Lower Outlet"
     pin: P7 # Incorrectly labeled P24 on PCB
     id: lowerRelay
-    restore_mode: ALWAYS_ON
-    on_turn_on:
-      - switch.turn_on: lowerLED
-    on_turn_off:
-      - switch.turn_off: lowerLED
 
   - platform: gpio
     # Upper LED active-high on P14
-    name: "Upper LED"
     pin: P14 # Incorrectly labeled P7 on PCB
     id: upperLED
   
   - platform: gpio
     # Lower LED active-high on P28
-    name: "Lower LED"
     pin: P28 # Incorrectly labeled P26 on PCB
     id: lowerLED
+
+switch:
+  - platform: output
+    name: "Upper Outlet"
+    id: upper
+    output: upperRelay
+    on_turn_on:
+      - output.turn_on: upperLED
+    on_turn_off:
+      - output.turn_off: upperLED
+
+  - platform: output
+    name: "Lower Outlet"
+    id: lower
+    output: lowerRelay
+    on_turn_on:
+      - output.turn_on: lowerLED
+    on_turn_off:
+      - output.turn_off: lowerLED

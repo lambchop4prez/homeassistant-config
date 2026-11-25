@@ -9,10 +9,18 @@ packages:
   device: !include ./devices/elegrp-rrr00.yaml
   time: !include ./components/ntp.yaml
   lower_timer: !include
-    file: ./components/on-off-timer.yaml
+    file: ./components/on-off-light.yaml
     vars:
       name: "${friendly_name} Bottom"
       on_at: "17:30:00"
       off_at: "01:00:00"
-      target_id: lowerRelay
+      target_id: light_1
       time_id: current_time
+
+light:
+  - platform: binary
+    id: light_1
+    name: Lava Bar
+    icon: mdi:lava-lamp
+    restore_mode: restore_default_off
+    output: lowerRelay
